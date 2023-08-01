@@ -30,4 +30,8 @@ public class Factory {
         this.vendingMachineList.add(rvm);
         return true;
     }
+
+    public String getName() {
+        return this.factoryName;
+    }
 }
