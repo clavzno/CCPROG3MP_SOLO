@@ -1,0 +1,200 @@
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * The Money class represents a collection of denominations and provides methods
+ * to manipulate and retrieve denomination counts.
+ */
+public class Money {
+    private static final int[] denominations = { 1, 5, 10, 20, 50, 100, 500, 1000 };
+    private double[] denominationCounts = new double[denominations.length];
+
+    /**
+     * Constructs a new Money object with default values for the denominations.
+     */
+    public Money() {
+        refillDenominations();
+    }
+
+
+    /**
+     * Sets all denominations to ten.
+     */    
+    public void refillDenominations() {
+        for (int i = 0; i < denominationCounts.length; i++) {
+            denominationCounts[i] = 10;
+        }
+    }
+
+    /**
+     * Resets all the denominations to zero.
+     */
+    public void resetDenominations() {
+        for (int i = 0; i < denominationCounts.length; i++) {
+            denominationCounts[i] = 0;
+        }
+    }
+
+    /**
+     * Returns the count of the specified denomination.
+     *
+     * @param denomination the denomination value
+     * @return the count of the denomination
+     */
+    public double getDenominationCount(double denomination) {
+        int index = findDenominationIndex(denomination);
+        if (index != -1) {
+            return denominationCounts[index];
+        }
+        System.out.println("Invalid denomination: " + denomination);
+        return 0;
+    }
+
+    /**
+     * Finds the index of the specified denomination in the denominations array.
+     *
+     * @param denomination the denomination value
+     * @return the index of the denomination, or -1 if not found
+     */
+    private int findDenominationIndex(double denomination) {
+        for (int i = 0; i < denominations.length; i++) {
+            if (denominations[i] == denomination) {
+                return i;
+            }
+        }
+        return -1; // Denomination not found
+    }
+
+    /**
+     * Adds the specified amount of the denomination to the collection.
+     *
+     * @param denomination the denomination value
+     * @param amount       the amount to add
+     */
+    public void addDenomination(double denomination, double amount) {
+        int index = findDenominationIndex(denomination);
+        if (index != -1) {
+            denominationCounts[index] += amount;
+        } else {
+            System.out.println("Invalid denomination: " + denomination);
+        }
+    }
+
+    /**
+     * Removes the specified amount of the denomination from the collection.
+     *
+     * @param denomination the denomination value
+     * @param amount       the amount to remove
+     */
+    public void removeDenomination(double denomination, double amount) {
+        int index = findDenominationIndex(denomination);
+        if (index != -1) {
+            if (denominationCounts[index] >= amount) {
+                denominationCounts[index] -= amount;
+            } else {
+                System.out.println("Insufficient " + denomination + " peso denominations.");
+            }
+        } else {
+            System.out.println("Invalid denomination: " + denomination);
+        }
+    }
+
+    /**
+     * Returns the count of the denomination at the specified index.
+     *
+     * @param index the index of the denomination
+     * @return the count of the denomination
+     */
+    public double getDenominationCount(int index) {
+        if (index >= 0 && index < denominationCounts.length) {
+            return denominationCounts[index];
+        }
+        System.out.println("Invalid denomination index: " + index);
+        return 0;
+    }
+
+    /**
+     * Sets the count of the denomination at the specified index.
+     *
+     * @param index the index of the denomination
+     * @param count the count to set
+     */
+    public void setDenominationCount(int index, double count) {
+        if (index >= 0 && index < denominationCounts.length) {
+            denominationCounts[index] = count;
+        } else {
+            System.out.println("Invalid denomination index: " + index);
+        }
+    }
+    
+    /**
+     * Returns boolean value if amount is an exact change
+     *
+     * @param amount this is the amount of change to check
+     * @return true if it is the exact change / false if not
+     */
+    public boolean hasExactChange(double amount){
+        double remainingAmount = amount;
+
+        for(int i = denominations.length - 1; i>=0; i--){
+            double denomination = denominations[i];
+            double denominationCount = denominationCounts[i];
+
+            if(denomination <= remainingAmount && denominationCount>0){
+                double neededCount = Math.floor(remainingAmount/denomination); 
+
+                if(neededCount <= denominationCount){
+                    remainingAmount -= neededCount * denomination;
+                }else{
+                    remainingAmount -= denominationCount * denomination;
+                }
+            }
+        }
+
+        //if remainingAmount it not zero, not exact change
+        return remainingAmount == 0;
+    }
+
+    
+    /**
+     * Returns changeHashMap that contains 
+     *
+     * @param amount this is the amount of change to check
+     * @return a map that contains a denomination and their respective count
+     */
+    public Map<Integer, Integer> calculateChange(double amount) {
+    Map<Integer, Integer> changeMap = new HashMap<>();
+
+    int largestDenomination = denominations[0];
+    int largestDenominationCount = (int) Math.floor(amount / largestDenomination);
+
+    if (largestDenominationCount > denominationCounts[0]) {
+        largestDenominationCount = (int) denominationCounts[0];
+    }
+
+    if (largestDenominationCount > 0) {
+        changeMap.put(largestDenomination, largestDenominationCount);
+        amount -= largestDenominationCount * largestDenomination;
+    }
+
+    for (int i = 1; i < denominations.length; i++) {
+        int denomination = denominations[i];
+        double denominationCount = denominationCounts[i];
+
+        if (denomination <= amount && denominationCount > 0) {
+            int neededCount = (int) Math.floor(amount / denomination);
+
+            if (neededCount <= denominationCount) {
+                changeMap.put(denomination, neededCount);
+                amount -= neededCount * denomination;
+            } else {
+                changeMap.put(denomination, (int) denominationCount);
+                amount -= denominationCount * denomination;
+            }
+        }
+    }
+
+    return changeMap;
+    }
+
+}

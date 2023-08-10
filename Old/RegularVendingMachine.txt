@@ -1,0 +1,195 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Represents a regular vending machine that sells items.
+ */
+public class RegularVendingMachine {
+    private String name;
+    private List<Item> slots;
+    private Money change;
+    private ArrayList<String> transactions;
+
+    /**
+     * Constructs a regular vending machine with the given name and initial item slots.
+     *
+     * @param name  the name of the vending machine
+     * @param slots the initial item slots in the vending machine
+     */
+    public RegularVendingMachine(String name, List<Item> slots) {
+        this.name = name;
+        this.slots = new ArrayList<>(slots);
+        this.change = new Money();
+    }
+
+    /**
+     * Returns the name of the vending machine.
+     *
+     * @return the name of the vending machine
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returns all the items in the vending machine.
+     *
+     * @return a list of all items in the vending machine
+     */
+    public List<Item> getAllItems() {
+        return slots;
+    }
+
+    /**
+     * Restocks the specified item in the vending machine with the given amount.
+     *
+     * @param itemToRestock   the item to restock
+     * @param amountToRestock the amount to restock
+     */
+    public void restockItem(Item itemToRestock, int amountToRestock) {
+        Item selectedItem = selectItem(itemToRestock);
+        selectedItem.restock(amountToRestock);
+    }
+
+    /**
+     * Sets the price of the specified item in the vending machine to the given price.
+     *
+     * @param item      the item to change the price of
+     * @param newPrice  the new price of the item
+     */
+    public void setPrice(Item item, double newPrice) {
+        Item itemToChange = selectItem(item);
+        itemToChange.setPrice(newPrice);
+    }
+
+    /**
+     * Selects the item with the same name as the specified item.
+     *
+     * @param itemToSelect the item to select
+     * @return the selected item, or null if not found
+     */
+    private Item selectItem(Item itemToSelect) {
+        for (Item item : slots) {
+            if (item.getName().equals(itemToSelect.getName())) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Collects the money accumulated in the vending machine.
+     */
+    public void collectMoney() {
+        change.resetDenominations();
+    }
+
+    /**
+     * Restocks the change of the vending machine with the specified denomination and amount.
+     *
+     * @param denominationToRestock the denomination to restock
+     * @param amount                the amount to restock
+     */
+    public void restockChange(double denominationToRestock, double amount) {
+        change.addDenomination(denominationToRestock, amount);
+    }
+
+    /**
+     * Buys the item at the specified index with the given amount of money.
+     *
+     * @param moneyInsert    the amount of money inserted
+     * @param itemIndexToBuy the index of the item to buy
+     * @return the bought item, or null if the purchase failed
+     */
+    public Item buyItem(double moneyInsert, int itemIndexToBuy) {
+        Item itemToBuy = slots.get(itemIndexToBuy);
+        double itemPrice = itemToBuy.getPrice();
+
+        if (moneyInsert >= itemPrice) {
+            double changeAmount = moneyInsert - itemPrice;
+
+            if (change.hasExactChange(changeAmount)) {
+                itemToBuy.decreaseStock();
+                itemToBuy.increaseNumBought();
+                return itemToBuy;
+            } else {
+                return null; // Unable to dispense exact change
+            }
+        } else {
+            return null; // Insufficient funds
+        }
+    }
+
+    /**
+     * Calculates the remaining money after buying an item.
+     *
+     * @param tempMoney      the temporary money before the purchase
+     * @param itemIndexToBuy the index of the item to buy
+     * @return the remaining money after the purchase
+     */
+    public double receiveMoney(double tempMoney, int itemIndexToBuy) {
+        double itemPrice = slots.get(itemIndexToBuy).getPrice();
+        return tempMoney - itemPrice;
+    }
+
+    /**
+     * Gives the appropriate change based on the remaining money and denominations.
+     *
+     * @param tempMoney      the remaining money after the purchase
+     * @param denominations  the array of available denominations
+     * @return the total change given
+     */
+    public double giveChange(double tempMoney, int[] denominations) {
+        double totalChange = 0.0;
+
+        if (change.hasExactChange(tempMoney)) {
+            Map<Integer, Integer> changeMap = change.calculateChange(tempMoney);
+
+            for (int i = denominations.length - 1; i >= 0; i--) {
+                int denomination = denominations[i];
+
+                if (changeMap.containsKey(denomination)) {
+                    int denominationCount = changeMap.get(denomination);
+                    System.out.println(denominationCount + " " + denomination + "-peso coin(s)");
+                    change.removeDenomination(denomination, denominationCount);
+                    totalChange += denomination * denominationCount;
+                }
+            }
+        } else {
+            return 0.0; // Unable to dispense exact change
+        }
+
+        return totalChange;
+    }
+
+    /**
+     * Adds a transaction to the list of transactions in the vending machine.
+     *
+     * @param itemName            the name of the item bought
+     * @param moneyReceived       the amount of money received
+     * @param changeGiven         the amount of change given
+     * @param stockBeforePurchase the stock amount before the purchase
+     * @param stockAfterPurchase  the stock amount after the purchase
+     */
+    public void addToTransactions(String itemName, String moneyReceived, String changeGiven, String stockBeforePurchase,
+                                  String stockAfterPurchase) {
+        // get item bought, money received, change given
+        String transaction = "Item bought: " + itemName + "\nMoney received: " + moneyReceived + "\nChange given: "
+                + changeGiven + "\n";
+        // get current stock amount before purchase and after purchase
+        String transactionPartTwo = "\nStock before purchase: " + stockAfterPurchase + "\nStock after purchase: "
+                + stockAfterPurchase + "\n";
+        transaction += transactionPartTwo;
+        transactions.add(transaction);
+    }
+
+    /**
+     * Returns the list of transactions in the vending machine.
+     *
+     * @return the list of transactions
+     */
+    public ArrayList<String> getTransactions() {
+        return transactions;
+    }
+}

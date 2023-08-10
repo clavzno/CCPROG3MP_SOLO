@@ -1,0 +1,52 @@
+import java.util.ArrayList;
+
+/**
+ * Represents a factory that creates and manages vending machines.
+ */
+public class Factory {
+    private ArrayList<RegularVendingMachine> regularVendingMachines;
+    // private ArrayList<SpecialVendingMachine> specialVendingMachines; FOR MCO2
+
+    /**
+     * Constructs a Factory object with an empty list of regular vending machines.
+     */
+    public Factory() {
+        regularVendingMachines = new ArrayList<RegularVendingMachine>();
+        // specialVendingMachines = new ArrayList<SpecialVendingMachine>();
+    }
+
+    /**
+     * Creates a new regular vending machine with the specified name and item list, and adds it to the factory.
+     *
+     * @param vendingMachineName the name of the vending machine
+     * @param itemList           the list of items in the vending machine
+     */
+    public void createRegularVendingMachine(String vendingMachineName, ArrayList<Item> itemList) {
+        RegularVendingMachine regularVendingMachine = new RegularVendingMachine(vendingMachineName, itemList);
+        regularVendingMachines.add(regularVendingMachine);
+    }
+
+    /**
+     * Returns the list of regular vending machines in the factory.
+     *
+     * @return the list of regular vending machines
+     */
+    public ArrayList<RegularVendingMachine> getVendingMachines() {
+        return regularVendingMachines;
+    } //for special vending machines, name it getSpecialVendingMachines
+
+    /**
+     * Selects a regular vending machine from the factory based on the specified index.
+     *
+     * @param index the index of the regular vending machine to select
+     * @return the selected regular vending machine, or null if the index is out of bounds
+     */
+    public RegularVendingMachine selectRegularMachine(int index) {
+        if (index >= 0 && index < regularVendingMachines.size()) {
+            RegularVendingMachine chosenVendingMachine = regularVendingMachines.get(index);
+            return chosenVendingMachine;
+        } else {
+            return null;
+        }
+    }
+}

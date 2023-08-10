@@ -1,37 +1,19 @@
-import java.util.ArrayList;
+import java.util.*; //ArrayList
 
 public class Factory {
-    private String factoryName;
-    private ArrayList<VendingMachine> vendingMachineList;
+    private final String factoryName; //provided upon instantiation and cannot be changed
     private CashRegister factoryFunds;
+    private ArrayList<VendingMachine> machines;
 
-    public Factory(String factoryName) {
-        this.factoryName = factoryName;
-        this.vendingMachineList = new ArrayList<VendingMachine>();
+
+    Factory (String newFactoryName) {
+        this.name = newFactoryName;
         this.factoryFunds = new CashRegister();
+        this.machines = new ArrayList<VendingMachine>();
     }
 
-    public VendingMachine chooseVendingMachine(String name) {
-        for (VendingMachine vm : this.vendingMachineList) {
-            if (vm.getVendingName().equals(name)) {
-                return vm;
-            }
-        }
-        
-        return null;
-    }
-
-    public Boolean createRegularVendingMachine(String name) {
-        if (chooseVendingMachine(name) != null) {
-            return false;
-        }
-
-        RegularVendingMachine rvm = new RegularVendingMachine(name);
-        this.vendingMachineList.add(rvm);
-        return true;
-    }
-
-    public String getName() {
-        return this.factoryName;
+    public void createRegularVendingMachine(String vendingMachineName, ArrayList<Item> ItemList){
+        VendingMachine newMachine = new VendingMachine();
+        this.machines.add(newMachine);
     }
 }

@@ -1,0 +1,124 @@
+/**
+ * Represents an item with a name, price, calorie count, and stock information.
+ */
+public class Item {
+    private String name;
+    private double price;
+    private double calorieCount;
+    private int stock;
+    private int lastRestockAmount;
+    private int numBought;
+
+    /**
+     * Constructs an Item object with the specified name, price, and calorie count.
+     * The initial stock is set to 10.
+     *
+     * @param name         the name of the item
+     * @param price        the price of the item
+     * @param calorieCount the calorie count of the item
+     */
+    public Item(String name, double price, double calorieCount) {
+        this.name = name;
+        this.price = price;
+        this.calorieCount = calorieCount;
+        this.stock = 10;
+    }
+
+    /**
+     * Returns the name of the item.
+     *
+     * @return the name of the item
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returns the price of the item.
+     *
+     * @return the price of the item
+     */
+    public double getPrice() {
+        return price;
+    }
+
+    /**
+     * Returns the calorie count of the item.
+     *
+     * @return the calorie count of the item
+     */
+    public double getCalorieCount() {
+        return calorieCount;
+    }
+
+    /**
+     * Returns the current stock availability of the item.
+     *
+     * @return the stock availability of the item
+     */
+    public int getStock() {
+        return stock;
+    }
+
+    /**
+     * Sets a new price for the item.
+     *
+     * @param newPrice the new price to set for the item
+     */
+    public void setPrice(double newPrice) {
+        this.price = newPrice;
+    }
+
+    /**
+     * Decreases the stock of the item by 1 when the item is successfully purchased.
+     */
+    public void decreaseStock() {
+        increaseNumBought();
+        this.stock--;
+    }
+
+    /**
+     * Increases the count of the number of times the item has been bought.
+     */
+    public void increaseNumBought() {
+        this.numBought++;
+    }
+
+    /**
+     * Restocks the item by the specified amount.
+     *
+     * @param amountToRestock the amount to restock for the item
+     * @return true if the restock is successful, false otherwise
+     */
+    public boolean restock(int amountToRestock) {
+        int maxStock = 10;
+        int currentStock = getStock();
+        if (currentStock + amountToRestock <= maxStock) {
+            this.lastRestockAmount = currentStock;
+            this.stock += amountToRestock;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns the amount of the last restock
+     *
+     * @return the last restock amount as integer
+     */    
+    public int getLastRestockAmount() { 
+        return lastRestockAmount;
+    }
+
+    /**
+     * Returns the item number of the item bought
+     *
+     * @return the item number of the item bought as an integer
+     */ 
+    public int getNumBought() {
+        return numBought;
+    }
+
+
+}

@@ -1,0 +1,60 @@
+public class Maintenance {
+    private RegularVendingMachine currentRegularMachine;
+
+    /**
+     * Constructs a Maintenance object for the specified regular vending machine.
+     *
+     * @param currentRegularMachine the regular vending machine to perform
+     *                              maintenance on
+     */
+    public Maintenance(RegularVendingMachine currentRegularMachine) {
+        this.currentRegularMachine = currentRegularMachine;
+    }
+
+    /**
+     * Restocks the specified item in the vending machine with the given amount.
+     *
+     * @param itemToRestock   the item to restock
+     * @param amountToRestock the amount to restock
+     */
+    public void restockItem(Item itemToRestock, int amountToRestock) {
+        this.currentRegularMachine.restockItem(itemToRestock, amountToRestock);
+    }
+
+    /**
+     * Sets a new price for the specified item.
+     *
+     * @param item     the item to set the new price for
+     * @param newPrice the new price of the item
+     */
+    public void setNewPrice(Item item, double newPrice) {
+        item.setPrice(newPrice);
+    }
+
+    /**
+     * Restocks the change of the vending machine with the specified denomination
+     * and amount.
+     *
+     * @param denominationToRestock the denomination to restock
+     * @param amount                the amount to restock
+     */
+    public void restockChange(double denominationToRestock, double amount) {
+        currentRegularMachine.restockChange(denominationToRestock, amount);
+    }
+
+    /**
+     * Collects the money accumulated in the vending machine.
+     */
+    public void collectMoney() {
+        currentRegularMachine.collectMoney();
+    }
+
+    /**
+     * Prints a summary of transactions and restock amounts in the vending machine.
+     */
+    public void printSummaryOfTransactions() {
+        for (String transaction : currentRegularMachine.getTransactions()) {
+            System.out.println(transaction);
+        }
+    }
+}
