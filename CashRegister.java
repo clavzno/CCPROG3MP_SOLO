@@ -1,45 +1,35 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CashRegister {
-    private HashMap<Double, Double> cashInventory;
+    private HashMap<Double, Integer> change;
+    private HashMap<Double, Integer> earnings;
 
     public CashRegister() {
-        this.cashInventory = new HashMap<Double, Double>(0, 0);
+        change = new HashMap<Double, Integer>();
+        earnings = new HashMap<Double, Integer>();
         initializeMoney();
     }
 
     private void initializeMoney() {
-        double denominations[] = { 0.25, 0.50, 1.00, 5.00, 10.00, 20.00, 50.00, 100.00, 1000.00 };
-        double amount[] = { 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+        Double denominations[] = { 0.25, 0.50, 1.0, 5.0, 10.0, 20.0, 50.0, 100.0, 200.0, 500.0, 1000.0 };
+        int values[] = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 
         for (int i = 0; i < denominations.length; i++) {
-            this.cashInventory.put(denominations[i], amount[i]);
+            change.put(denominations[i], values[i]);
+            earnings.put(denominations[i], 0);
         }
     }
 
-    private void receivePayment(HashMap<Double, Double> payment, HashMap<Double, Double> price) {
-        checkIfEnoughMoney(payment, price);
-
-        for (Double denomination : payment.keySet()) {
-            this.cashInventory.put(denomination, this.cashInventory.get(denomination) + payment.get(denomination));
-        }
+    public ArrayList<Integer> emptyCashRegister() {
+        ArrayList<Integer> transferredValues = new ArrayList<>(earnings.values());
+        earnings.replaceAll((k, v) -> 0);
+        return transferredValues;
     }
 
-    // TODO: set conditions if payment is not enough and if payment is enough. If the payment is enough return true, which will trigger the change method.
-    public boolean checkIfEnoughMoney(HashMap<Double, Double> payment, HashMap<Double, Double> price) {
-        if (payment.size() != price.size() || payment.size() == 0 || price.size() == 0 || or payment.size < price.size()) {
-            return false;
-        }
-        if (payment.size >= price.size()) {
-            for (Double denomination : payment.keySet()) {
-                if (payment.get(denomination) < price.get(denomination)) {
-                    return false;
-                }
-            }
-        }
+    public void replenishChange(double denomination, int amount) {
+        change.put(denomination, change.get(denomination) + amount);
     }
 
-    public boolean returnChange() {
-        return true; //TODO: return true if change is returned successfully, false if not
-    }
 }

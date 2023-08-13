@@ -1,12 +1,29 @@
+//DONE
+public class Item {
+    private String name;
+    private double calories;
+    private double price;
 
-public abstract class Item {
-    private String itemName;
-    private double itemCals;
-    private double itemPrice;
+    public Item(String name, double calories, double price) {
+        this.name = name;
+        this.calories = calories;
+        this.price = price;
+    }
 
-    public Item(String itemName, double itemCals, double itemPrice) {
-        this.itemName = itemName;
-        this.itemCals = itemCals;
-        this.itemPrice = itemPrice;
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    //getters
+    public String getName() {
+        return name;
+    }
+
+    public double getCalories() {
+        return calories;
+    }
+
+    public double getPrice() {
+        return price;
     }
 }
