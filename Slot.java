@@ -5,17 +5,27 @@ public class Slot {
     private static final int maxCapacity = 10; 
     TransactionHistory history;
 
+    /**
+     * Constructor for Slot. Creates an ArrayList of Items and a TransactionHistory instance.
+     */
     public Slot(){
         itemsInSlot = new ArrayList<Item>();
         this.history = new TransactionHistory();
     }
 
+    /**
+     * Adds an item to the slot.
+     * @param item item to be added
+     */
     public void addItem(Item item){
         itemsInSlot.add(item);
     }
 
-    //this is only for upon creation and adding of items, not for restock
+    /**
+     * During creation of a VendingMachine, this method is called to fill the Slot with items so that it is full.
+     */
     public void makeAllSlotsFullOfItem() {
+            //this is only for upon creation and adding of items, not for restock
         int currentSize = itemsInSlot.size();
         int itemsToAdd = maxCapacity - currentSize;
     
@@ -25,7 +35,11 @@ public class Slot {
         }
     }
     
-
+    /**
+     * Handles dispensing of items from the slot.
+     * @param amount amount of items to be dispensed
+     * @return ArrayList of items dispensed
+     */
     public ArrayList<Item> dispenseItem(int amount) {
         ArrayList<Item> itemsDispensed = new ArrayList<Item>();
         for (int i = 0; i < itemsInSlot.size(); i++) {
@@ -38,6 +52,10 @@ public class Slot {
         return itemsDispensed;
     }
 
+    /**
+     * Changes the price of the item in the slot.
+     * @param newPrice new price of the item
+     */
     public void changeItemPrice(double newPrice){
         for (int i = 0; i < itemsInSlot.size(); i++) {
             itemsInSlot.get(i).setPrice(newPrice);

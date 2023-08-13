@@ -6,6 +6,10 @@ public class Transaction {
     int amountSold;
     double totalPrice;
 
+    /**
+     * Constructor for Transaction
+     * @param items items sold in the transaction
+     */
     public Transaction(ArrayList<Item> items) {
         this.itemsSold = items;
         this.amountSold = items.size();

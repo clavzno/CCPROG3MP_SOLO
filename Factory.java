@@ -29,59 +29,62 @@ public class Factory {
         }
     }
 
-
-
-
-
-
     /********* VENDING MACHINE CREATION ************/
 
     public boolean createRegularVendingMachine(String name, int slotAmount) {
         // create new regular vending machine object
         RegularVendingMachine regVend = new RegularVendingMachine(name);
-        vendingMachines.add(regVend); //added vending machine without slots to list
+        vendingMachines.add(regVend); // added vending machine without slots to list
         int vendingMachineIndex = vendingMachines.indexOf(regVend);
         // add slots
 
-        //check if slotamount is valid
+        // check if slotamount is valid
         boolean slotAmountCheck = regVend.checkIfSlotAmountIsValid(slotAmount);
 
         if (!slotAmountCheck) {
             // delete vending machine object from list
             vendingMachines.remove(vendingMachineIndex);
             return false; // something went wrong and vending machine was deleted
-        }
-        else {
+        } else {
             // add slots
             for (int i = 0; i < slotAmount; i++) {
                 regVend.addSlot(1);
             }
-            return true; //when done adding slots
+            return true; // when done adding slots
         }
     }
 
     public void createSpecialVendingMachine(String name, int slotAmount) {
-        //create new SpecialVendingMachine object and add to list
+        // create new SpecialVendingMachine object and add to list
         SpecialVendingMachine specVend = new SpecialVendingMachine(name);
         vendingMachines.add(specVend);
-        specVend.addSlot(slotAmount); //add slots, will adjust to minimum if less than minimum
+        specVend.addSlot(slotAmount); // add slots, will adjust to minimum if less than minimum
     }
 
-    //for regular vending machine
     public Item createItem(String name, double calories, double price) {
+        // for regular vending machine
         return new Item(name, calories, price);
     }
 
-    //for special vending machine
     public Item createAddonItem(String name, double calories, double price) {
+        // for special vending machine
         return new AddonItem(name, calories, price);
     }
 
-    //for specialvendingmachine
     public Item createComboItem(String name, double calories, double price, String preparationMessage) {
+        // for specialvendingmachine
         return new ComboItem(name, calories, price, preparationMessage);
     }
 
+    /**
+     * Adds an item to the chosen vending machine
+     * 
+     * @param item           the item to be added
+     * @param vendingmachine the vending machine to add the item to
+     * @param slotIndex      the slot within the vending machine to add the item to
+     * @return true if the item was added successfully, false if the item could not
+     *         be added
+     */
     public boolean addItemToMachine(Item item, VendingMachine vendingmachine, int slotIndex) {
         // calls public void addItemToSlot(int slotIndex, Item item) {
         boolean addItemCheck = getVendingMachines().get(vendingMachines.indexOf(vendingmachine))
@@ -96,15 +99,30 @@ public class Factory {
 
     /********* BUYING ITEMS ************/
 
-    // should return the change
+    /**
+     * A task that handles buying an item from a regular vending machine
+     * @param vendingMachine the vending machine to buy from
+     * @param slotIndex the slot to buy from
+     * @param amountToBuy the amount to buy
+     * @param payment the payment which the user is paying with
+     * @return the change that is returned from buyItemTask of RegularVendingMachines
+     */
     public HashMap<Double, Integer> buyItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
             int slotIndex, int amountToBuy, HashMap<Double, Integer> payment) {
-        // calls public HashMap<Double, Integer> buyItemTask(int slotIndex, HashMap<Double, Integer> payment)
+        // should return the change
+        // calls public HashMap<Double, Integer> buyItemTask(int slotIndex,
+        // HashMap<Double, Integer> payment)
         HashMap<Double, Integer> change = vendingMachine.buyItemTask(slotIndex, payment);
         return change;
     }
 
-    // should return the items
+    /**
+     * A task that handles dispensing an item from a regular vending machine. Only called when the user has paid the full amount.
+     * @param vendingMachine the vending machine to dispense from
+     * @param amountToBuy the amount of items to get/dispense
+     * @param slotIndex the slot to get items from
+     * @return the items that were dispensed
+     */
     public ArrayList<Item> dispenseItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
             int amountToBuy, int slotIndex) {
         // calls public ArrayList<Item> dispenseItemTask(int amount, int slotIndex)
@@ -120,13 +138,14 @@ public class Factory {
         // TODO
     }
 
-
-
-
-
-
     /********* MAINTENANCE ************/
 
+    /**
+     * A method that handles setting the new price of an item in a specific slot.
+     * @param vendingMachine the chosen vending machine
+     * @param slotIndex the slot within the vending machine that holds the items
+     * @param newPrice the new price to set the items to
+     */
     public void setNewItemPrice(VendingMachine vendingMachine, int slotIndex, double newPrice) {
         Slot selectedSlot = vendingMachine.getSlots().get(slotIndex);
 
@@ -139,6 +158,12 @@ public class Factory {
         }
     }
 
+    /**
+     * A method that handles restocking an item in a specific slot.
+     * @param vendingMachine the chosen vending machine
+     * @param slotIndex the slot within the vending machine that holds the items
+     * @param amountToRestock the amount to restock
+     */
     public void restockItemTask(VendingMachine vendingMachine, int slotIndex, int amountToRestock) {
         Slot selectedSlot = vendingMachine.getSlots().get(slotIndex);
 
@@ -148,10 +173,10 @@ public class Factory {
         vendingMachine.setLastRestockDateTime(new Date());
 
         // Check if amount exceeds max capacity
-        doesRestockAmountExceedCapacity(amountToRestock, selectedSlot);
+        boolean exceedAmountCheck = doesRestockAmountExceedCapacity(amountToRestock, selectedSlot);
 
         // if true, adjust amount to max capacity
-        if (doesRestockAmountExceedCapacity(amountToRestock, selectedSlot) == true) {
+        if (exceedAmountCheck == true) {
             amountToRestock = restockAdjuster(amountToRestock, selectedSlot);
         }
 
@@ -163,33 +188,44 @@ public class Factory {
             vendingMachine.addItemToSlot(slotIndex, itemCopy);
         }
 
-        //add new date to transaction history
+        // add new date to transaction history
         vendingMachine.setLastRestockDateTime(new Date());
     }
 
+    /**
+     * A method that checks if the intended restock amount is more than the slot's capacity. All slots are set to a maximum of 10.
+     * @param amountToRestock the amount intended to restock
+     * @param selectedSlot the slot to restock
+     * @return true if the amount exceeds the capacity, false if it does not
+     */
     private boolean doesRestockAmountExceedCapacity(int amountToRestock, Slot selectedSlot) {
         if (amountToRestock > selectedSlot.getMaxCapacity()) {
-            return true; // adjust amount to max capacity
+            return true; //amount exceeds capacity
         } else {
             return false;
         }
     }
 
+    /**
+     * A method that adjusts the amount to restock to the max capacity of the slot.
+     * @param amountToRestock the amount intended to restock
+     * @param selectedSlot the slot to restock
+     * @return the new amount to restock that doesn't exceed the max capacity
+     */
     private int restockAdjuster(int amountToRestock, Slot selectedSlot) {
-        //adjust amount to max capacity
+        // adjust amount to max capacity
         int amountExceeded = selectedSlot.getMaxCapacity();
         return amountExceeded;
     }
 
+    /**
+     * A method that handles viewing the Transaction History of a vending machine. Exports the summary to a file. 
+     * @param vendingMachine the vending machine to view the transaction history of
+     */
     public void printTransactionHistory(VendingMachine vendingMachine) {
         vendingMachine.getTransactionHistory().viewTransactionHistory(vendingMachine);
         vendingMachine.getTransactionHistory().exportSummaryToFile(vendingMachine);
     }
-
-
-
-
-
 
     /********* GETTERS ************/
     public String getName() {
@@ -208,7 +244,11 @@ public class Factory {
         vendingMachine.getFunds().replenishChange(denomination, amount);
     }
 
-    // additional
+    /**
+     * A method that selects a vending machine from the list of vending machines. To be used in main for ease.
+     * @param vendingMachineIndex the index of the vending machine to select
+     * @return the selected vending machine
+     */
     public VendingMachine selectVendingMachine(int vendingMachineIndex) {
         return vendingMachines.get(vendingMachineIndex);
     }
