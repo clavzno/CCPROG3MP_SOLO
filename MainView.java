@@ -48,7 +48,7 @@ public class MainView {
         HashMap<Double, Integer> testChange = factory.buyItemFromRegularVendingMachineTask(
                 (RegularVendingMachine) testRegularDrinksMachine, testSlotIndexToBuyFrom - 1, testAmountToBuy,
                 testPayment);
-        System.out.println("Your change is " + testChange);
+        //System.out.println("Your change is " + testChange);
 
         // View transaction history
         System.out.println("Transaction History: ");
