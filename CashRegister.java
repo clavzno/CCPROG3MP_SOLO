@@ -70,15 +70,16 @@ public class CashRegister {
     } */
 
     public HashMap<Double, Integer> calculatePaymentTask(double itemPrice, HashMap<Double, Integer> payment) {
+        // Calculate the total payment from the user based on the payment HashMap
         double totalPayment = calculateTotalPaymentFromUser(payment);
-    
+        // Check if totalPayment is enough
         if (isInputEnough(itemPrice, totalPayment)) {
             boolean machineEnoughCheck = doesMachineHaveEnoughChange(totalPayment);
     
             if (machineEnoughCheck) {
                 // Calculate the change to give back based on the calculated payment
                 HashMap<Double, Integer> changeToGive = canIgetChangePls(change, totalPayment - itemPrice);
-    
+                // Put the money from payment into earnings
                 putUserPaymentInEarnings(payment);
     
                 // Rearrange the change to give in the original order
@@ -86,9 +87,11 @@ public class CashRegister {
     
                 return originalOrderChangeToGive;
             } else {
+                 // If the machine doesn't have enough exact change, return the original payment               
                 return payment;
             }
         } else {
+            // If payment is not enough, return the original payment to the user
             return payment;
         }
     }
