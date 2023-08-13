@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MCO1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Old/MCO1.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
