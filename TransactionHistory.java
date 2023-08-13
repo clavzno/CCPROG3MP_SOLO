@@ -49,23 +49,20 @@ public class TransactionHistory {
         this.addTransactionToHistory(transaction);
     }
 
+    /**
+     * During restock, the last restock date is reset to the current date and time. Clears old transaction history.
+     * @param lastRestockDateTime the date and time of the last restock
+     */
     public void setLastRestockDateTime(Date lastRestockDateTime) {
         this.lastRestockDateTime = lastRestockDateTime;
         // clear old transactions because date has been reset
         transactions.clear();
     }
 
-    // TODO:
-    /*
-     * FORMAT
-     * VENDING MACHINE (Name) SUMMARY
-     * Last Restock Date: (Date)
-     * 1. Transaction 1 - Item name (Amount) PHP (Total)
-     * 2. Transaction 2 - Item name (Amount) PHP (Total)
-     * ---
-     * Total Sales: PHP (Total Sales)
+    /**
+     * View the transaction history of the vending machine. Shows the Transaction History within the terminal.
+     * @param vendingMachine 
      */
-
     public void viewTransactionHistory(VendingMachine vendingMachine){
         System.out.println("VENDING MACHINE (" + vendingMachine.getName() + ") SUMMARY");
         System.out.println("Last Restock Date: " + lastRestockDateTime.toString());
@@ -86,6 +83,10 @@ public class TransactionHistory {
         System.out.println("Total Sales: PHP " + getTotalSalesEarnings());
     }
 
+    /**
+     * Exports the transaction History to a file called Summary.txt within Summaries folder.
+     * @param vendingMachine vending machine to export the transaction history from
+     */
     public void exportSummaryToFile(VendingMachine vendingMachine) {
         viewTransactionHistory(vendingMachine);
         System.out.println("Exporting to file...");

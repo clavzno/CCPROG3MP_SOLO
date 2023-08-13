@@ -1,5 +1,5 @@
-//import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.ArrayList;
+//import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,7 +24,7 @@ public class CashRegister {
         }
     }
 
-    /*
+    /**
      * This method is called when the user buys an item from the vending machine. It
      * completes three steps:
      * Calculating the double total payment from the user, compares that to the
@@ -34,10 +34,9 @@ public class CashRegister {
      * the machine returns the original payment to the user.
      * 
      * @param itemPrice the price of the item the user wants to buy
-     * 
      * @param payment is the Hashmap of the payment given by the user
      */
-    public HashMap<Double, Integer> calculatePaymentTask(double itemPrice, HashMap<Double, Integer> payment) {
+    /* public HashMap<Double, Integer> calculatePaymentTask(double itemPrice, HashMap<Double, Integer> payment) {
         // Calculate the total payment from the user based on the payment HashMap
         double totalPayment = calculateTotalPaymentFromUser(payment);
 
@@ -68,7 +67,32 @@ public class CashRegister {
             // If payment is not enough, return the original payment to the user
             return payment;
         }
+    } */
+
+    public HashMap<Double, Integer> calculatePaymentTask(double itemPrice, HashMap<Double, Integer> payment) {
+        double totalPayment = calculateTotalPaymentFromUser(payment);
+    
+        if (isInputEnough(itemPrice, totalPayment)) {
+            boolean machineEnoughCheck = doesMachineHaveEnoughChange(totalPayment);
+    
+            if (machineEnoughCheck) {
+                // Calculate the change to give back based on the calculated payment
+                HashMap<Double, Integer> changeToGive = canIgetChangePls(change, totalPayment - itemPrice);
+    
+                putUserPaymentInEarnings(payment);
+    
+                // Rearrange the change to give in the original order
+                HashMap<Double, Integer> originalOrderChangeToGive = rearrangeToOriginalOrder(payment, changeToGive);
+    
+                return originalOrderChangeToGive;
+            } else {
+                return payment;
+            }
+        } else {
+            return payment;
+        }
     }
+    
 
     public Double calculateTotalPaymentFromUser(HashMap<Double, Integer> payment) {
         double totalPayment = 0.0;
@@ -78,35 +102,37 @@ public class CashRegister {
         return totalPayment;
     }
 
-    /*
+    /**
      * This method is called within calculatePaymentTask. It calculates the change
      * to give back to the user. This is only called assuming the HashMap total
      * payment given by the user is enough and the machine has enough exact change
      * to give back to the user.
+     * 
+     * @param itemPrice the price of the item the user wants to buy
+     * @param payment  is the Hashmap of the payment given by the user
+     * @return the HashMap of the change to give back to the user
      */
-    // This method calculates the change to give back to the user after a purchase.
-    // It ensures the correct denominations are used and handles the count of each
-    // denomination.
-    public HashMap<Double, Integer> calculateChangeToGive(double itemPrice, HashMap<Double, Integer> payment) {
+    /* public HashMap<Double, Integer> calculateChangeToGive(double itemPrice, HashMap<Double, Integer> payment) {
         // Initialize a HashMap to store the change to give back to the user
         HashMap<Double, Integer> changeToGive = new HashMap<>();
-    
+
         // Calculate the total payment received from the user
         double totalPayment = calculateTotalPaymentFromUser(payment);
         // Calculate the total change amount to give back to the user
         double changeAmount = totalPayment - itemPrice;
-    
-        // Get the available denominations for change in descending order (largest first)
+
+        // Get the available denominations for change in descending order (largest
+        // first)
         Double[] denominations = change.keySet().toArray(new Double[0]);
         Arrays.sort(denominations, Collections.reverseOrder());
-    
+
         // Iterate through the denominations to calculate and assign the change to give
         for (Double denomination : denominations) {
             // Get the count of available coins/bills of the current denomination
             int availableCount = change.get(denomination);
             // Calculate the required count of coins/bills for the change
             int requiredCount = (int) (changeAmount / denomination);
-    
+
             // If change of the current denomination is needed
             if (requiredCount > 0) {
                 // Calculate the actual count of coins/bills to give,
@@ -116,11 +142,60 @@ public class CashRegister {
                 changeToGive.put(denomination, countToGive);
                 // Update the remaining change amount
                 changeAmount -= denomination * countToGive;
-            } }
-        
-            return changeToGive;
-        } 
+            }
+        }
 
+        return changeToGive;
+    } */
+
+    public HashMap<Double, Integer> calculateChangeToGive(double itemPrice, HashMap<Double, Integer> payment) {
+        double totalPayment = calculateTotalPaymentFromUser(payment);
+        double changeAmount = totalPayment - itemPrice;
+    
+        HashMap<Double, Integer> changeToGive = canIgetChangePls(change, changeAmount);
+    
+        return changeToGive;
+    }
+    
+    
+    /**
+     * This method is called within calculatePaymentTask. Handles change calculation.
+     * @param coins the coins available in the machine
+     * @param theChangeIwant the amount of change to give back to the user
+     * @return
+     */
+    public HashMap<Double, Integer> canIgetChangePls(HashMap<Double, Integer> coins, double theChangeIwant) {
+        HashMap<Double, Integer> changeToGive = new HashMap<Double, Integer>();
+
+        // get all available denominations and sort them from biggest to smallest
+        ArrayList<Double> denominations = new ArrayList<>(coins.keySet());
+        Collections.sort(denominations, Collections.reverseOrder());
+
+        // Iterate through change until there's nothing left
+        double changeLeft = theChangeIwant;
+        for (Double denomination : denominations) {
+            int howMuchOfThisDenominationToGiveBack = 0;
+
+            // keep adding coins from the denomination until we run out OR adding this denomination doesn't end up giving more change
+            while (howMuchOfThisDenominationToGiveBack + 1 < coins.get(denomination)
+                    && 0 <= changeLeft - denomination) {
+                //keep adding it
+                changeLeft -= denomination;
+                howMuchOfThisDenominationToGiveBack++;
+            }
+
+            // repopulate the hashmap with how much of the denomination there is to give
+            // back, whether zero or not
+            changeToGive.put(denomination, howMuchOfThisDenominationToGiveBack);
+        }
+
+        // If there's still change left, invalidate it
+        if (0 < changeLeft)
+            for (Double denomination : changeToGive.keySet())
+                changeToGive.put(denomination, -1);
+
+        return changeToGive;
+    }
 
     // This method rearranges the calculated change in the original order of
     // denominations.
@@ -204,4 +279,3 @@ public class CashRegister {
         return earnings;
     }
 }
-

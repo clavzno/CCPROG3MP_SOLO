@@ -12,7 +12,6 @@ import java.util.HashMap;
  */
 
 public class MainView {
-
     public static void main(String[] args) {
         // GUI NOTE: show title screen
         Scanner sc = new Scanner(System.in);
