@@ -32,7 +32,8 @@ public abstract class VendingMachine {
         return true; //slot is not full
     }
 
-    public abstract HashMap<Double, Integer> buyItemTask(int slotIndex, HashMap<Double, Integer> payment);
+    //public abstract HashMap<Double, Integer> buyItemTask(int slotIndex, HashMap<Double, Integer> payment);
+    //removed because it's different per machine type
 
     public void setLastRestockDateTime(Date newDate) {
         history.setLastRestockDateTime(newDate);

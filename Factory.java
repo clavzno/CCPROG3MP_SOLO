@@ -59,14 +59,27 @@ public class Factory {
             return true; //when done adding slots
         }
     }
-    
 
-    public boolean createSpecialVendingMachine(String name, int slotAmount) {
-        return true;
+    public void createSpecialVendingMachine(String name, int slotAmount) {
+        //create new SpecialVendingMachine object and add to list
+        SpecialVendingMachine specVend = new SpecialVendingMachine(name);
+        vendingMachines.add(specVend);
+        specVend.addSlot(slotAmount); //add slots, will adjust to minimum if less than minimum
     }
 
+    //for regular vending machine
     public Item createItem(String name, double calories, double price) {
         return new Item(name, calories, price);
+    }
+
+    //for special vending machine
+    public Item createAddonItem(String name, double calories, double price) {
+        return new AddonItem(name, calories, price);
+    }
+
+    //for specialvendingmachine
+    public Item createComboItem(String name, double calories, double price, String preparationMessage) {
+        return new ComboItem(name, calories, price, preparationMessage);
     }
 
     public boolean addItemToMachine(Item item, VendingMachine vendingmachine, int slotIndex) {
@@ -80,11 +93,6 @@ public class Factory {
         }
         return true;
     }
-
-
-
-
-
 
     /********* BUYING ITEMS ************/
 
@@ -168,7 +176,8 @@ public class Factory {
     }
 
     private int restockAdjuster(int amountToRestock, Slot selectedSlot) {
-        int amountExceeded = amountToRestock - selectedSlot.getMaxCapacity();
+        //adjust amount to max capacity
+        int amountExceeded = selectedSlot.getMaxCapacity();
         return amountExceeded;
     }
 
