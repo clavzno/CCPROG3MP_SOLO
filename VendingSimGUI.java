@@ -22,19 +22,47 @@ public class VendingSimGUI extends JFrame {
     }
 
     public void createWindow() {
-        System.out.println(this.getLayout()); // to check if it's overriding all the setups below
-        this.setLayout(new BorderLayout()); // set layout manager
+        this.setLayout(new GridBagLayout()); // set layout manager
         this.setTitle("Vending Machine Simulator");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(400, 600);
-
+    
         // setting window title image icon
         ImageIcon image = new ImageIcon("Sprites\\filledRegular.png");
         this.setIconImage(image.getImage());
         this.getContentPane().setBackground(new Color(0xBBE6E4));
-
-        this.setLayout(new BorderLayout()); // set layout manager
+    
+        // create GridBagConstraints to center the image
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.CENTER;
+    
+        // create JPanel to hold the image
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(new Color(0xBBE6E4));
+        imagePanel.setLayout(new BorderLayout());
+    
+        // import titleCard image and scale it - to be used in JLabel
+        ImageIcon VendingSimImage = new ImageIcon("Sprites\\titleCard.png");
+        int width = VendingSimImage.getIconWidth() * 5;
+        int height = VendingSimImage.getIconHeight() * 5;
+        Image scaledVendingSimImage = VendingSimImage.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon newVendingSimImage = new ImageIcon(scaledVendingSimImage);
+    
+        // importing VendingSimImage into a JLabel
+        JLabel titleCardLabel = new JLabel(newVendingSimImage);
+        titleCardLabel.setText("Vending Machine Simulator");
+        titleCardLabel.setHorizontalTextPosition(JLabel.CENTER);
+        titleCardLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        titleCardLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleCardLabel.setVerticalAlignment(JLabel.CENTER);
+        imagePanel.add(titleCardLabel, BorderLayout.CENTER); // adding titleCard to the imagePanel
+    
+        this.add(imagePanel, c); // adding imagePanel to the JFrame
         this.setVisible(true);
     }
 

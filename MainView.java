@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 public class MainView {
     public static void main(String[] args) {
+        VendingSimGUI GUI = new VendingSimGUI(); 
+
         // GUI NOTE: show title screen
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter your factory name: ");

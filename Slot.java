@@ -3,14 +3,12 @@ import java.util.ArrayList;
 public class Slot {
     private ArrayList<Item> itemsInSlot;
     private static final int maxCapacity = 10; 
-    TransactionHistory history;
 
     /**
      * Constructor for Slot. Creates an ArrayList of Items and a TransactionHistory instance.
      */
     public Slot(){
         itemsInSlot = new ArrayList<Item>();
-        this.history = new TransactionHistory();
     }
 
     /**

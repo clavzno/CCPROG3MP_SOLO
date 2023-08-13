@@ -97,7 +97,7 @@ public class CashRegister {
     }
     
 
-    public Double calculateTotalPaymentFromUser(HashMap<Double, Integer> payment) {
+    public double calculateTotalPaymentFromUser(HashMap<Double, Integer> payment) {
         double totalPayment = 0.0;
         for (Double pay : payment.keySet()) {
             totalPayment += pay * payment.get(pay); // multiplies the key with the value

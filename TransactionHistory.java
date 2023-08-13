@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TransactionHistory {
-    ArrayList<Transaction> transactions;
-    Date lastRestockDateTime;
-    double totalSalesEarnings;
+    private ArrayList<Transaction> transactions;
+    private Date lastRestockDateTime;
+    private double totalSalesEarnings;
 
     public TransactionHistory() {
         transactions = new ArrayList<Transaction>();
@@ -22,7 +22,6 @@ public class TransactionHistory {
      * @return The total sales earnings
      */
     public double getTotalSalesEarnings() {
-        double totalSalesEarnings = 0;
         for (Transaction transaction : transactions) {
             totalSalesEarnings += transaction.totalPrice;
         }

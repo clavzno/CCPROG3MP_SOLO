@@ -130,12 +130,16 @@ public class Factory {
         return itemsBought;
     }
 
-    public void buyItemFromSpecialVendingMachineTask(VendingMachine vendingMachine, int slotIndex, int amount) {
-        // TODO
+    public HashMap<Double, Integer> buyItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine, int slotIndex, int amount) {
+        HashMap<Double, Integer> change = new HashMap<Double, Integer>();
+        return change; 
+        //TODO
     }
 
-    public void displenseItemFromSpecialVendingMachineTask(VendingMachine vendingMachine, int slotIndex, int amount) {
-        // TODO
+    public Item displenseItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine, ArrayList<Integer> slotIndex, int amount) {
+        Item item = new Item("", 0, 0);
+        return item;
+        //TODO
     }
 
     /********* MAINTENANCE ************/
