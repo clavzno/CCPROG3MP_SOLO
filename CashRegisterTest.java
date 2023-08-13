@@ -4,11 +4,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class CashRegister {
+public class CashRegisterTest {
     private HashMap<Double, Integer> change;
     private HashMap<Double, Integer> earnings;
 
-    public CashRegister() {
+    public CashRegisterTest() {
         change = new HashMap<Double, Integer>();
         earnings = new HashMap<Double, Integer>();
         initializeMoney();
@@ -37,6 +37,34 @@ public class CashRegister {
      * 
      * @param payment is the Hashmap of the payment given by the user
      */
+    
+   /* public HashMap<Double, Integer> calculatePaymentTask(double itemPrice, HashMap<Double, Integer> payment) {
+        // payment is accepted in different denominations and change is given in
+        // different denominations too
+
+        // calculate total payment from user
+        double totalPayment = calculateTotalPaymentFromUser(payment);
+
+        // call isInputEnough to check if totalPayment is enough
+        isInputEnough(itemPrice, totalPayment);
+
+        if (isInputEnough(itemPrice, totalPayment) == true) {
+            // if true, proceed to checking if the machine has enough change
+            boolean machineEnoughCheck = doesMachineHaveEnoughChange(totalPayment); // import HashMap payment from User
+            // if true, being calculating the change to give back to the user
+            if (machineEnoughCheck == true) {
+                HashMap<Double, Integer> changeToGive = calculateChangeToGive(itemPrice, payment);
+                putUserPaymentInEarnings(payment); // put the money from payment in earnings
+                HashMap<Double, Integer> originalOrderChangeToGive = rearrangeToOriginalOrder(payment, changeToGive);
+                return originalOrderChangeToGive;
+            } else {
+                // if false, meaning payment is not enough OR the machine doesn't have enough
+                // exact change, return the original payment to the user
+                return payment;
+            }
+        }
+    } */
+
     public HashMap<Double, Integer> calculatePaymentTask(double itemPrice, HashMap<Double, Integer> payment) {
         // Calculate the total payment from the user based on the payment HashMap
         double totalPayment = calculateTotalPaymentFromUser(payment);

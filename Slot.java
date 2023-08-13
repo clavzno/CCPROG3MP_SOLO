@@ -21,8 +21,13 @@ public class Slot {
                 itemsDispensed.add(item); //item is added to arraylist of items dispensed
             }
         }
-        
         return itemsDispensed;
+    }
+
+    public void changeItemPrice(double newPrice){
+        for (int i = 0; i < itemsInSlot.size(); i++) {
+            itemsInSlot.get(i).setPrice(newPrice);
+        }
     }
 
     //getters
