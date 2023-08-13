@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Date;
 
 public abstract class VendingMachine {
     private String name;
@@ -16,14 +17,26 @@ public abstract class VendingMachine {
         minSlots = 8;
     }
 
-    public abstract boolean addSlot(int amount);
+    public abstract void addSlot(int amount);
     //overridden in RegularVendingMachine and SpecialVendingMachine
 
     public void addItemToSlot(int slotIndex, Item item) {
         slots.get(slotIndex).addItem(item);
     }
 
+    public boolean checkIfSlotIsFull(int slotIndex) {
+        Slot selectedSlot = slots.get(slotIndex);
+        if (selectedSlot.getItemsInSlot().size() == selectedSlot.getMaxCapacity()) {
+            return false; 
+        }
+        return true; //slot is not full
+    }
+
     public abstract HashMap<Double, Integer> buyItemTask(int slotIndex, HashMap<Double, Integer> payment);
+
+    public void setLastRestockDateTime(Date newDate) {
+        history.setLastRestockDateTime(newDate);
+    }
 
     //getters
     public String getName() {
@@ -44,6 +57,10 @@ public abstract class VendingMachine {
 
     public int getMinSlots() {
         return minSlots;
+    }
+
+    public TransactionHistory getTransactionHistory() {
+        return history;
     }
 
 }
