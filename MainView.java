@@ -40,7 +40,7 @@ public class MainView {
         testPayment.put(1.0, 1); // Pay 1.0 PHP
         testPayment.put(0.5, 1); // Pay 0.5 PHP
         testPayment.put(0.25, 2); // Pay 0.5 PHP
-        System.out.println("You entered: " + testPayment);
+        //System.out.println("You entered: " + testPayment);
 
         // Buy items from the vending machine
         int testSlotIndexToBuyFrom = 1; // Change this to the correct slot index
@@ -51,8 +51,8 @@ public class MainView {
         //System.out.println("Your change is " + testChange);
 
         // View transaction history
-        System.out.println("Transaction History: ");
-        testRegularDrinksMachine.getTransactionHistory().viewTransactionHistory(testRegularDrinksMachine);
+        //System.out.println("Transaction History: ");
+        //testRegularDrinksMachine.getTransactionHistory().viewTransactionHistory(testRegularDrinksMachine);
         /* TESTING DONE */
 
         VendingMachine adoboVendingMachine = initializeAdoboVendingMachine();
@@ -488,7 +488,7 @@ public class MainView {
             regularDrinksMachine.addSlot(1);
         }
 
-        System.out.println("SLOTS ADDED TO REGULAR DRINKS MACHINE: " + regularDrinksMachine.getSlots().size());
+        //System.out.println("SLOTS ADDED TO REGULAR DRINKS MACHINE: " + regularDrinksMachine.getSlots().size());
 
         for (int j = 0; j < regularDrinksMachine.getSlots().size(); j++) {
             Slot currentSlot = regularDrinksMachine.getSlots().get(j);
