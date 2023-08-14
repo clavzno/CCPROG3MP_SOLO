@@ -22,7 +22,7 @@ public class VendingSimGUI extends JFrame {
     }
 
     public void createWindow() {
-        this.setLayout(new GridBagLayout()); // set layout manager
+        this.setLayout(new BorderLayout()); // set layout manager
         this.setTitle("Vending Machine Simulator");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -33,13 +33,10 @@ public class VendingSimGUI extends JFrame {
         this.setIconImage(image.getImage());
         this.getContentPane().setBackground(new Color(0xBBE6E4));
     
-        // create GridBagConstraints to center the image
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.anchor = GridBagConstraints.CENTER;
+        // create JPanel to hold the image and start button
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(new Color(0xBBE6E4));
     
         // create JPanel to hold the image
         JPanel imagePanel = new JPanel();
@@ -62,7 +59,15 @@ public class VendingSimGUI extends JFrame {
         titleCardLabel.setVerticalAlignment(JLabel.CENTER);
         imagePanel.add(titleCardLabel, BorderLayout.CENTER); // adding titleCard to the imagePanel
     
-        this.add(imagePanel, c); // adding imagePanel to the JFrame
+        // create JPanel for the startButton
+        JPanel startMenuPanel2 = new JPanel();
+        startMenuPanel2.setBackground(new Color(0xBBE6E4));
+        JButton startButton = createStartButton(startMenuPanel2);
+        startMenuPanel2.add(startButton); // adding JButton to the startMenuPanel2
+    
+        mainPanel.add(imagePanel); // adding imagePanel to the mainPanel
+        mainPanel.add(startMenuPanel2); // adding startMenuPanel2 to the mainPanel
+        this.add(mainPanel, BorderLayout.CENTER); // adding mainPanel to the JFrame
         this.setVisible(true);
     }
 

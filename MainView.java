@@ -212,25 +212,19 @@ public class MainView {
         // Available)
         System.out.println("VENDING MACHINE CATALOGUE: ");
         for (int i = 0; i < machine.getSlots().size(); i++) {
-            if (machine.getSlots().get(i).getItemsInSlot().get(i) instanceof ComboItem) {
-                System.out.println("[" + (i + 1) + "] Slot " + (i + 1) + ":" + " Item Name: "
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getName() + " ("
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getPrice() + " PHP) ("
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getCalories() + " calories) ("
-                        + machine.getSlots().get(i).getItemsInSlot().size() + " available) (COMBO)");
-            } else if (machine.getSlots().get(i).getItemsInSlot().get(i) instanceof AddonItem) {
-                System.out.println("[" + (i + 1) + "] Slot " + (i + 1) + ":" + " Item Name: "
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getName() + " ("
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getPrice() + " PHP) ("
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getCalories() + " calories) ("
-                        + machine.getSlots().get(i).getItemsInSlot().size() + " available) (ADDON ONLY)");
-            } else {
-                System.out.println("[" + (i + 1) + "] Slot " + (i + 1) + ":" + " Item Name: "
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getName() + " ("
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getPrice() + " PHP) ("
-                        + machine.getSlots().get(i).getItemsInSlot().get(i).getCalories() + " calories) ("
-                        + machine.getSlots().get(i).getItemsInSlot().size() + " available)");
+            Item item = machine.getSlots().get(i).getItemsInSlot().get(0);  // Get the current item
+            String itemType = "";
+            
+            if (item instanceof ComboItem) {
+                itemType = " (COMBO)";
+            } else if (item instanceof AddonItem) {
+                itemType = " (ADDON ONLY)";
             }
+            
+            System.out.println("[" + (i + 1) + "] Slot " + (i + 1) + ": Item Name: "
+                    + item.getName() + " (" + item.getPrice() + " PHP) ("
+                    + item.getCalories() + " calories) ("
+                    + machine.getSlots().get(i).getItemsInSlot().size() + " available)" + itemType);
         }
     }
 

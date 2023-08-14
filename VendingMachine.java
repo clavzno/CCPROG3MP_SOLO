@@ -5,7 +5,7 @@ import java.util.Date;
 public abstract class VendingMachine {
     private String name;
     private ArrayList<Slot> slots;
-    private CashRegister funds;
+    private CashRegisterCopy funds;
     private TransactionHistory history;
     private int minSlots;
 
@@ -16,7 +16,7 @@ public abstract class VendingMachine {
     public VendingMachine(String name) {
         this.name = name;
         slots = new ArrayList<Slot>();
-        funds = new CashRegister();
+        funds = new CashRegisterCopy();
         history = new TransactionHistory();
         minSlots = 8;
     }
@@ -63,7 +63,7 @@ public abstract class VendingMachine {
         return slots;
     }
 
-    public CashRegister getFunds() {
+    public CashRegisterCopy getFunds() {
         return funds;
     }
 

@@ -96,7 +96,7 @@ public class RegularVendingMachine extends VendingMachine {
         } else {
             // Proceed with transaction
             double itemPrice = getSlots().get(slotIndex - 1).getItemsInSlot().get(0).getPrice();
-            HashMap<Double, Integer> returnChange = super.getFunds().calculateChangeToGive(itemPrice, payment);
+            HashMap<Double, Integer> returnChange = super.getFunds().calculatePaymentTask(itemPrice, payment);
             return returnChange;
         }
     }

@@ -1,5 +1,6 @@
 VENDING MACHINE (Regular Drinks Machine) SUMMARY
-Last Restock Date: Sun Aug 13 23:56:42 CST 2023
+Last Restock Date: Mon Aug 14 11:05:02 CST 2023
 1. Transaction - Coke (1.5 PHP) Sprite (1.5 PHP) - Total: 0.0 PHP
+2. Transaction - - Total: 0.0 PHP
 ---
 Total Sales: PHP 0.0
