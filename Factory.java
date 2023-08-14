@@ -101,11 +101,13 @@ public class Factory {
 
     /**
      * A task that handles buying an item from a regular vending machine
+     * 
      * @param vendingMachine the vending machine to buy from
-     * @param slotIndex the slot to buy from
-     * @param amountToBuy the amount to buy
-     * @param payment the payment which the user is paying with
-     * @return the change that is returned from buyItemTask of RegularVendingMachines
+     * @param slotIndex      the slot to buy from
+     * @param amountToBuy    the amount to buy
+     * @param payment        the payment which the user is paying with
+     * @return the change that is returned from buyItemTask of
+     *         RegularVendingMachines
      */
     public HashMap<Double, Integer> buyItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
             int slotIndex, int amountToBuy, HashMap<Double, Integer> payment) {
@@ -116,11 +118,23 @@ public class Factory {
         return change;
     }
 
+    //TODO: Temporary method for testing
+    public double buyItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
+            int slotIndex, int amountToBuy, double payment) {
+        // should return the change
+        // calls public HashMap<Double, Integer> buyItemTask(int slotIndex,
+        // HashMap<Double, Integer> payment)
+        double change = vendingMachine.buyItemTask(slotIndex, payment);
+        return change;
+    }
+
     /**
-     * A task that handles dispensing an item from a regular vending machine. Only called when the user has paid the full amount.
+     * A task that handles dispensing an item from a regular vending machine. Only
+     * called when the user has paid the full amount.
+     * 
      * @param vendingMachine the vending machine to dispense from
-     * @param amountToBuy the amount of items to get/dispense
-     * @param slotIndex the slot to get items from
+     * @param amountToBuy    the amount of items to get/dispense
+     * @param slotIndex      the slot to get items from
      * @return the items that were dispensed
      */
     public ArrayList<Item> dispenseItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
@@ -130,25 +144,29 @@ public class Factory {
         return itemsBought;
     }
 
-    public HashMap<Double, Integer> buyItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine, int slotIndex, int amount) {
+    public HashMap<Double, Integer> buyItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine,
+            int slotIndex, int amount) {
         HashMap<Double, Integer> change = new HashMap<Double, Integer>();
-        return change; 
-        //TODO
+        return change;
+        // TODO
     }
 
-    public Item displenseItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine, ArrayList<Integer> slotIndex, int amount) {
+    public Item displenseItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine,
+            ArrayList<Integer> slotIndex, int amount) {
         Item item = new Item("", 0, 0);
         return item;
-        //TODO
+        // TODO
     }
 
     /********* MAINTENANCE ************/
 
     /**
      * A method that handles setting the new price of an item in a specific slot.
+     * 
      * @param vendingMachine the chosen vending machine
-     * @param slotIndex the slot within the vending machine that holds the items
-     * @param newPrice the new price to set the items to
+     * @param slotIndex      the slot within the vending machine that holds the
+     *                       items
+     * @param newPrice       the new price to set the items to
      */
     public void setNewItemPrice(VendingMachine vendingMachine, int slotIndex, double newPrice) {
         Slot selectedSlot = vendingMachine.getSlots().get(slotIndex);
@@ -164,8 +182,10 @@ public class Factory {
 
     /**
      * A method that handles restocking an item in a specific slot.
-     * @param vendingMachine the chosen vending machine
-     * @param slotIndex the slot within the vending machine that holds the items
+     * 
+     * @param vendingMachine  the chosen vending machine
+     * @param slotIndex       the slot within the vending machine that holds the
+     *                        items
      * @param amountToRestock the amount to restock
      */
     public void restockItemTask(VendingMachine vendingMachine, int slotIndex, int amountToRestock) {
@@ -197,14 +217,16 @@ public class Factory {
     }
 
     /**
-     * A method that checks if the intended restock amount is more than the slot's capacity. All slots are set to a maximum of 10.
+     * A method that checks if the intended restock amount is more than the slot's
+     * capacity. All slots are set to a maximum of 10.
+     * 
      * @param amountToRestock the amount intended to restock
-     * @param selectedSlot the slot to restock
+     * @param selectedSlot    the slot to restock
      * @return true if the amount exceeds the capacity, false if it does not
      */
     private boolean doesRestockAmountExceedCapacity(int amountToRestock, Slot selectedSlot) {
         if (amountToRestock > selectedSlot.getMaxCapacity()) {
-            return true; //amount exceeds capacity
+            return true; // amount exceeds capacity
         } else {
             return false;
         }
@@ -212,8 +234,9 @@ public class Factory {
 
     /**
      * A method that adjusts the amount to restock to the max capacity of the slot.
+     * 
      * @param amountToRestock the amount intended to restock
-     * @param selectedSlot the slot to restock
+     * @param selectedSlot    the slot to restock
      * @return the new amount to restock that doesn't exceed the max capacity
      */
     private int restockAdjuster(int amountToRestock, Slot selectedSlot) {
@@ -223,7 +246,9 @@ public class Factory {
     }
 
     /**
-     * A method that handles viewing the Transaction History of a vending machine. Exports the summary to a file. 
+     * A method that handles viewing the Transaction History of a vending machine.
+     * Exports the summary to a file.
+     * 
      * @param vendingMachine the vending machine to view the transaction history of
      */
     public void printTransactionHistory(VendingMachine vendingMachine) {
@@ -249,7 +274,9 @@ public class Factory {
     }
 
     /**
-     * A method that selects a vending machine from the list of vending machines. To be used in main for ease.
+     * A method that selects a vending machine from the list of vending machines. To
+     * be used in main for ease.
+     * 
      * @param vendingMachineIndex the index of the vending machine to select
      * @return the selected vending machine
      */

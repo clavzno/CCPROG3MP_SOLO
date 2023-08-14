@@ -22,54 +22,75 @@ public class VendingSimGUI extends JFrame {
     }
 
     public void createWindow() {
-        this.setLayout(new BorderLayout()); // set layout manager
+        this.setLayout(new BorderLayout());
         this.setTitle("Vending Machine Simulator");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(400, 600);
     
-        // setting window title image icon
+        // Setting window title image icon
         ImageIcon image = new ImageIcon("Sprites\\filledRegular.png");
         this.setIconImage(image.getImage());
         this.getContentPane().setBackground(new Color(0xBBE6E4));
     
-        // create JPanel to hold the image and start button
+        // Create JPanel to hold the image and start button
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(0xBBE6E4));
     
-        // create JPanel to hold the image
+        // Create JPanel to hold the image
         JPanel imagePanel = new JPanel();
         imagePanel.setBackground(new Color(0xBBE6E4));
         imagePanel.setLayout(new BorderLayout());
     
-        // import titleCard image and scale it - to be used in JLabel
+        // Import titleCard image and scale it - to be used in JLabel
         ImageIcon VendingSimImage = new ImageIcon("Sprites\\titleCard.png");
         int width = VendingSimImage.getIconWidth() * 5;
         int height = VendingSimImage.getIconHeight() * 5;
         Image scaledVendingSimImage = VendingSimImage.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         ImageIcon newVendingSimImage = new ImageIcon(scaledVendingSimImage);
     
-        // importing VendingSimImage into a JLabel
+        // Importing VendingSimImage into a JLabel
         JLabel titleCardLabel = new JLabel(newVendingSimImage);
         titleCardLabel.setText("Vending Machine Simulator");
         titleCardLabel.setHorizontalTextPosition(JLabel.CENTER);
         titleCardLabel.setVerticalTextPosition(JLabel.BOTTOM);
         titleCardLabel.setHorizontalAlignment(JLabel.CENTER);
         titleCardLabel.setVerticalAlignment(JLabel.CENTER);
-        imagePanel.add(titleCardLabel, BorderLayout.CENTER); // adding titleCard to the imagePanel
+        imagePanel.add(titleCardLabel, BorderLayout.CENTER);
     
-        // create JPanel for the startButton
+        // Create JPanel for the input field and start button
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+        inputPanel.setBackground(new Color(0xBBE6E4));
+    
+        // Create JLabel for factory name
+        JLabel factoryLabel = new JLabel("Enter Factory Name:");
+        factoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputPanel.add(factoryLabel);
+    
+        // Create JTextField for user input
+        JTextField factoryTextField = new JTextField();
+        factoryTextField.setMaximumSize(new Dimension(200, 30));
+        factoryTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputPanel.add(factoryTextField);
+    
+        // Create JPanel for the startButton
         JPanel startMenuPanel2 = new JPanel();
         startMenuPanel2.setBackground(new Color(0xBBE6E4));
         JButton startButton = createStartButton(startMenuPanel2);
-        startMenuPanel2.add(startButton); // adding JButton to the startMenuPanel2
+        startMenuPanel2.add(startButton);
     
-        mainPanel.add(imagePanel); // adding imagePanel to the mainPanel
-        mainPanel.add(startMenuPanel2); // adding startMenuPanel2 to the mainPanel
-        this.add(mainPanel, BorderLayout.CENTER); // adding mainPanel to the JFrame
+        // Add components to mainPanel
+        mainPanel.add(imagePanel);
+        mainPanel.add(inputPanel);
+        mainPanel.add(startMenuPanel2);
+    
+        // Add mainPanel to the JFrame
+        this.add(mainPanel, BorderLayout.CENTER);
         this.setVisible(true);
     }
+    
 
     public void createStartMenu() {
         // creating JPanel to hold the titleCard

@@ -95,6 +95,29 @@ public class CashRegister {
             return payment;
         }
     }
+
+    //TODO: Temporary method for testing
+    public double calculatePaymentTask(double itemPrice, double payment) {
+        // Check if totalPayment is enough
+        if (isInputEnough(itemPrice, payment) == true) {
+            boolean machineEnoughCheck = doesMachineHaveEnoughChange(payment);
+        
+            if (machineEnoughCheck) {
+                // Calculate change
+                double changeToGive = calculateChangeToGive(itemPrice, payment);
+                // Rearrange the change to give in the original order
+                return changeToGive;
+            } else {
+                 // If the machine doesn't have enough exact change, return the original payment               
+                return payment;
+            }
+        } else {
+            // If payment is not enough, return the original payment to the user
+            return payment;
+        }
+    }
+    
+
     
 
     public double calculateTotalPaymentFromUser(HashMap<Double, Integer> payment) {
@@ -159,7 +182,12 @@ public class CashRegister {
     
         return changeToGive;
     }
-    
+
+    //TODO: Temporary method for testing
+    public double calculateChangeToGive(double itemPrice, double payment) {
+        double changeAmount = payment - itemPrice;
+        return changeAmount;
+    }
     
     /**
      * This method is called within calculatePaymentTask. Handles change calculation.

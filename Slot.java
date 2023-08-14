@@ -38,7 +38,7 @@ public class Slot {
      * @param amount amount of items to be dispensed
      * @return ArrayList of items dispensed
      */
-    public ArrayList<Item> dispenseItem(int amount) {
+    /* public ArrayList<Item> dispenseItem(int amount) {
         ArrayList<Item> itemsDispensed = new ArrayList<Item>();
         for (int i = 0; i < itemsInSlot.size(); i++) {
             if (itemsInSlot.size() == amount) { 
@@ -48,7 +48,20 @@ public class Slot {
             }
         }
         return itemsDispensed;
+    } */
+    public ArrayList<Item> dispenseItem(int amount) {
+        ArrayList<Item> itemsDispensed = new ArrayList<Item>();
+        int i = 0;
+        while (i < itemsInSlot.size() && itemsDispensed.size() < amount) {
+            Item item = itemsInSlot.get(i);
+            itemsInSlot.remove(i);
+            itemsDispensed.add(item);
+            // Increment i to move to the next item in the slot
+            i++;
+        }
+        return itemsDispensed;
     }
+    
 
     /**
      * Changes the price of the item in the slot.

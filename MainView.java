@@ -8,7 +8,8 @@ import java.util.HashMap;
  * the user is unable to receive the items they ordered.
  * 2. Set New Price does not work properly for special vending machine //FIXED
  * 3. initalizeAdoboVendingMachine() adds 104 slots for some reason //FIXED
- * 4. RestockItemTask allows for slot exceeded amount for some reason
+ * 4. RestockItemTask allows for slot exceeded amount for some reason 
+ * 5. BuyItemTask for RegularVendingMachine does not work properly //change isn't returned even when changed to double
  */
 
 public class MainView {
@@ -155,7 +156,7 @@ public class MainView {
                             case 6: // Test Vending Machine Features
                                 if (chosen instanceof SpecialVendingMachine) {
                                     displayVendingMachineCatalogue(chosen);
-                                    System.out.println("Special Vending Machine is not supported in this version.");
+                                    System.out.println("SPECIAL VENDING MACHINE BUYING NOT YET IMPLEMENTED.");
                                     break;
                                 } else {
                                     displayVendingMachineCatalogue(chosen);
@@ -170,9 +171,12 @@ public class MainView {
                                     HashMap<Double, Integer> payment = getPaymentFromUser(sc);
                                     System.out.println("You entered: " + payment);
                                     // buys item from vending machine
-                                    HashMap<Double, Integer> change = factory.buyItemFromRegularVendingMachineTask(
+                                    /* TODO: REMOVED FOR TESTING */
+                                    /* HashMap<Double, Integer> change = factory.buyItemFromRegularVendingMachineTask(
                                             (RegularVendingMachine) chosen, slotIndexToBuyFrom - 1, amountToBuy,
-                                            payment);
+                                            payment); */
+                                    double doublePayment = turnPaymentIntoDouble(payment);
+                                    double change = factory.buyItemFromRegularVendingMachineTask((RegularVendingMachine) chosen, slotIndexToBuyFrom, amountToBuy, doublePayment);
                                     System.out.println("Your change is " + change);
                                     // dispense item
                                     ArrayList<Item> items = factory.dispenseItemFromRegularVendingMachineTask(
@@ -193,6 +197,14 @@ public class MainView {
 
         sc.close();
         System.out.println("Thank you for using " + name + " factory!");
+    }
+
+    public static double turnPaymentIntoDouble(HashMap<Double, Integer> payment) {
+        double total = 0.0;
+        for (double denomination : payment.keySet()) {
+            total += denomination * payment.get(denomination);
+        }
+        return total;
     }
 
     public static HashMap<Double, Integer> getPaymentFromUser(Scanner sc) {
