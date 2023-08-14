@@ -157,11 +157,26 @@ public class MainView {
                                 factory.printTransactionHistory(chosen);
                                 break;
                             case 6: // Test Vending Machine Features
+                                sc.nextLine();
                                 if (chosen instanceof SpecialVendingMachine) {
-                                    displayVendingMachineCatalogue(chosen);
-                                    // TODO check public static ArrayList<Item>
-                                    // chooseItemsForCartInSpecialVending(){
-
+                                    ArrayList<Item> cart = chooseItemsForCartInSpecialVending(
+                                            (SpecialVendingMachine) chosen, sc);
+                                    //calculate total price based on cart
+                                    double totalPrice = 0;
+                                    for (Item item : cart) {
+                                        totalPrice += item.getPrice();
+                                    }
+                                    System.out.println("Total price is " + totalPrice);
+                                    //proceed with payment
+                                    HashMap<Double, Integer> payment = getPaymentFromUser(sc);
+                                    System.out.println("You entered: " + payment);
+                                    HashMap<Double, Integer> change = factory.buyItemFromSpecialVendingMachineTask(
+                                            (SpecialVendingMachine) chosen, cart, testPayment);
+                                    System.out.println("Your change is " + change);
+                                    // proceed to dispense item
+                                    Item itemBought = factory.dispenseItemFromSpecialVendingMachineTask(
+                                            (SpecialVendingMachine) chosen, cart);
+                                    System.out.println("You bought: " + itemBought);
                                     break;
                                 } else {
                                     displayVendingMachineCatalogue(chosen);
@@ -171,8 +186,10 @@ public class MainView {
                                     System.out.println("Enter amount to buy: ");
                                     int amountToBuy = sc.nextInt();
                                     sc.nextLine();
+                                    //show total price
+                                    double totalPrice = chosen.getSlots().get(slotIndexToBuyFrom-1).getItemsInSlot().get(0).getPrice() * amountToBuy;
+                                    System.out.println("Total price is " + totalPrice);
                                     // gets user payment by iterating through denominations and asking how much they
-                                    // want to put
                                     HashMap<Double, Integer> payment = getPaymentFromUser(sc);
                                     System.out.println("You entered: " + payment);
                                     // buys item from vending machine by calling the buyItemTask
@@ -249,7 +266,6 @@ public class MainView {
     
         return cart;
     }
-    
 
     public static boolean isCartOnlyAddonItems(ArrayList<Item> cart) {
         boolean isCartOnlyAddonItems = true;
@@ -261,7 +277,6 @@ public class MainView {
         }
         return isCartOnlyAddonItems;
     }
-    
 
     public static double turnPaymentIntoDouble(HashMap<Double, Integer> payment) {
         double total = 0.0;

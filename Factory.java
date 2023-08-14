@@ -140,7 +140,7 @@ public class Factory {
         return change;
     }
 
-    public Item displenseItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine,
+    public Item dispenseItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine,
             ArrayList<Item> cart) {
         Item combinedItem = vendingMachine.dispenseItemTask(cart);
         return combinedItem;
