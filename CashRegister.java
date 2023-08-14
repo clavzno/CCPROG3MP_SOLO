@@ -19,7 +19,7 @@ public class CashRegister {
         int values[] = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 
         for (int i = 0; i < denominations.length; i++) {
-            change.put(denominations[i], values[i]);
+            change.put(denominations[i], 0);
             earnings.put(denominations[i], 0);
         }
     }

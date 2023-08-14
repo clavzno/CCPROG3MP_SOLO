@@ -160,13 +160,13 @@ public class MainView {
                                 if (chosen instanceof SpecialVendingMachine) {
                                     ArrayList<Item> cart = chooseItemsForCartInSpecialVending(
                                             (SpecialVendingMachine) chosen, sc);
-                                    //calculate total price based on cart
+                                    // calculate total price based on cart
                                     double totalPrice = 0;
                                     for (Item item : cart) {
                                         totalPrice += item.getPrice();
                                     }
                                     System.out.println("Total price is " + totalPrice);
-                                    //proceed with payment
+                                    // proceed with payment
                                     HashMap<Double, Integer> payment = getPaymentFromUser(sc);
                                     System.out.println("You entered: " + payment);
                                     HashMap<Double, Integer> change = factory.buyItemFromSpecialVendingMachineTask(
@@ -185,8 +185,9 @@ public class MainView {
                                     System.out.println("Enter amount to buy: ");
                                     int amountToBuy = sc.nextInt();
                                     sc.nextLine();
-                                    //show total price
-                                    double totalPrice = chosen.getSlots().get(slotIndexToBuyFrom-1).getItemsInSlot().get(0).getPrice() * amountToBuy;
+                                    // show total price
+                                    double totalPrice = chosen.getSlots().get(slotIndexToBuyFrom - 1).getItemsInSlot()
+                                            .get(0).getPrice() * amountToBuy;
                                     System.out.println("Total price is " + totalPrice);
                                     // gets user payment by iterating through denominations and asking how much they
                                     HashMap<Double, Integer> payment = getPaymentFromUser(sc);
@@ -199,12 +200,16 @@ public class MainView {
                                             payment);
                                     System.out.println("Your change is " + change);
                                     // dispense item
-                                    ArrayList<Item> items = factory.dispenseItemFromRegularVendingMachineTask(
-                                            (RegularVendingMachine) chosen, amountToBuy, slotIndexToBuyFrom - 1);
-                                    System.out.println("Dispensed the following items: ");
-                                    for (Item item : items) {
-                                        System.out.println("MAINVIEW");
-                                        System.out.println(item);
+                                    // check if change is same amount of payment
+                                    if (change.equals(payment)) {
+                                        break;
+                                    } else {
+                                        ArrayList<Item> items = factory.dispenseItemFromRegularVendingMachineTask(
+                                                (RegularVendingMachine) chosen, amountToBuy, slotIndexToBuyFrom - 1);
+                                        System.out.println("Dispensed the following items: ");
+                                        for (Item item : items) {
+                                            System.out.println(item);
+                                        }
                                     }
                                     break;
                                 }
@@ -225,7 +230,6 @@ public class MainView {
 
     public static ArrayList<Item> chooseItemsForCartInSpecialVending(SpecialVendingMachine chosen, Scanner sc) {
         ArrayList<Item> cart = new ArrayList<>();
-        
         // Repeat the process as long as the cart is not empty
         do {
             boolean isDoneChoosingItems = false; // Flag to check if user is done choosing items
@@ -237,32 +241,33 @@ public class MainView {
                 System.out.println("Enter amount to add to cart: ");
                 int amount = sc.nextInt();
                 sc.nextLine();
-        
+
                 // Add amount of items to cart
                 for (int i = 0; i < amount; i++) {
                     Item itemToAdd = chosen.getSlots().get(slotIndex - 1).getItemsInSlot().get(0);
-                    chosen.addToCart(itemToAdd);
+                    cart.add(itemToAdd);
                 }
-    
+
                 // Prompt if done choosing
                 System.out.println("Are you done choosing items? (Y/N)");
                 String stringIsDoneChoosingItems = sc.nextLine();
-                if (stringIsDoneChoosingItems.equalsIgnoreCase("Y") || stringIsDoneChoosingItems.equalsIgnoreCase("Yes")) {
+                if (stringIsDoneChoosingItems.equalsIgnoreCase("Y")
+                        || stringIsDoneChoosingItems.equalsIgnoreCase("Yes")) {
                     isDoneChoosingItems = true;
                 }
             } while (!isDoneChoosingItems);
-            
+
             // Check if cart is not empty before checking if items are only from addon
-            if (!cart.isEmpty()) {
-                boolean areItemsOnlyFromAddon = isCartOnlyAddonItems(cart);
-                if (areItemsOnlyFromAddon) {
-                    System.out.println("You cannot proceed to checkout because your cart only contains addon items.");
-                    System.out.println("Clearing Cart...");
-                    chosen.getCart().clear();
-                }
+            // if (cart.isEmpty()) {
+            boolean areItemsOnlyFromAddon = isCartOnlyAddonItems(cart);
+            if (areItemsOnlyFromAddon) {
+                System.out.println("You cannot proceed to checkout because your cart only contains addon items.");
+                System.out.println("Clearing Cart...");
+                cart.clear();
             }
-        } while (!cart.isEmpty());
-    
+            // }
+        } while (cart.isEmpty() == true); // repeat until cart is not empty
+
         return cart;
     }
 
