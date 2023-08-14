@@ -170,18 +170,20 @@ public class MainView {
                                     // want to put
                                     HashMap<Double, Integer> payment = getPaymentFromUser(sc);
                                     System.out.println("You entered: " + payment);
-                                    // buys item from vending machine
-                                    /* TODO: REMOVED FOR TESTING */
-                                    /* HashMap<Double, Integer> change = factory.buyItemFromRegularVendingMachineTask(
+                                    // buys item from vending machine by calling the buyItemTask
+                                    //imports the chosen vending machine, slotindex-1 because view is 1-x, amount to buy, and the Hashmap payment
+                                    HashMap<Double, Integer> change = factory.buyItemFromRegularVendingMachineTask(
                                             (RegularVendingMachine) chosen, slotIndexToBuyFrom - 1, amountToBuy,
-                                            payment); */
-                                    double doublePayment = turnPaymentIntoDouble(payment);
-                                    double change = factory.buyItemFromRegularVendingMachineTask((RegularVendingMachine) chosen, slotIndexToBuyFrom, amountToBuy, doublePayment);
+                                            payment); 
                                     System.out.println("Your change is " + change);
                                     // dispense item
                                     ArrayList<Item> items = factory.dispenseItemFromRegularVendingMachineTask(
                                             (RegularVendingMachine) chosen, slotIndexToBuyFrom - 1, amountToBuy);
-                                    System.out.println("Dispensed the following items" + items);
+                                    System.out.println("Dispensed the following items: ");
+                                        for (Item item : items) {
+                                            System.out.println("MAINVIEW");
+                                            System.out.println(item);
+                                        }
                                     break;
                                 }
                             case 7: // Exit Maintenance Menu

@@ -43,109 +43,30 @@ public class RegularVendingMachine extends VendingMachine {
     }
 
     /**
-     * Task that handles buying an Item from a Regular Vending Machine. First checks
-     * if the slot is invalid then checks if the slot is empty.
-     * If both one of or both are false, the transaction is not processed and the
-     * change is returned.
-     * If both are true, the transaction is processed and the change is returned.
-     * Dispense of Item is to be called afterwards.
-     * 
-     * @param slotIndex index of the slot
-     * @param payment   payment given by the user
-     * @return change to be returned to the user
+     * Task that handles buying an item. To be called before dispenseItemTask. 
+     * Conditions were removed due to bugs.
+     * Called by factory.buyItemFromRegularVendingMachineTask and calls CashRegister.calculatePaymentTask.
+     * @param slotIndex 
+     * @param payment
+     * @param itemPrice
+     * @return
      */
-    /*
-     * public HashMap<Double, Integer> buyItemTask(int slotIndex, HashMap<Double,
-     * Integer> payment) {
-     * // check if invalid slot
-     * boolean invalidSlotCheck = checkIfInvalidSlot(slotIndex);
-     * // check if slot is empty
-     * boolean emptySlotCheck = checkIfSlotIsFull(slotIndex);
-     * // if both are true, proceed with import itemprice into cashregister to check
-     * if
-     * // payment is enough and to calculate change
-     * if (invalidSlotCheck == true || emptySlotCheck == false) {
-     * return payment;
-     * } else if (invalidSlotCheck == false || emptySlotCheck == true) {
-     * return payment;
-     * } else {
-     * // proceed with transaction
-     * HashMap<Double, Integer> returnChange =
-     * super.getFunds().calculatePaymentTask(slotIndex, payment);
-     * return returnChange;
-     * // dispense Item is called separately and that's where transaction is added
-     * to
-     * }
-     * }
-     */
-
-    /**
-     * Task that handles buying an Item from a Regular Vending Machine. First checks
-     * if the slot is invalid then checks if the slot is empty.
-     * If both one of or both are false, the transaction is not processed and the
-     * change is returned.
-     * If both are true, the transaction is processed and the change is returned.
-     * Dispense of Item is to be called afterwards.
-     * 
-     * @param slotIndex index of the slot
-     * @param payment   payment given by the user
-     * @return change to be returned to the user
-     */
-    /*
-     * public HashMap<Double, Integer> buyItemTask(int slotIndex, HashMap<Double,
-     * Integer> payment) {
-     * // check if invalid slot
-     * boolean invalidSlotCheck = checkIfInvalidSlot(slotIndex);
-     * // check if slot is empty
-     * boolean emptySlotCheck = checkIfSlotIsFull(slotIndex);
-     * 
-     * if (!invalidSlotCheck || !emptySlotCheck) {
-     * return payment; // Return payment if slot is invalid or empty
-     * } else {
-     * // Proceed with transaction
-     * double itemPrice = getSlots().get(slotIndex -
-     * 1).getItemsInSlot().get(0).getPrice();
-     * HashMap<Double, Integer> returnChange =
-     * super.getFunds().calculatePaymentTask(itemPrice, payment);
-     * return returnChange;
-     * }
-     * }
-     */
-
-    public HashMap<Double, Integer> buyItemTask(int slotIndex, HashMap<Double, Integer> payment) {
-        // check if invalid slot
+    public HashMap<Double, Integer> buyItemTask(HashMap<Double, Integer> payment, double itemPrice) {
+        /*  // check if invalid slot
         boolean invalidSlotCheck = checkIfInvalidSlot(slotIndex);
         // check if slot is empty
         boolean emptySlotCheck = checkIfSlotIsFull(slotIndex);
 
-        if (!invalidSlotCheck || !emptySlotCheck) {
-            return payment; // Return payment if slot is invalid or empty
-        } else {
-            // Proceed with transaction
-            double itemPrice = getSlots().get(slotIndex - 1).getItemsInSlot().get(0).getPrice();
+        if (!invalidSlotCheck && emptySlotCheck) {
+            return payment; // Return the payment back to the user
+        } else if (invalidSlotCheck && !emptySlotCheck) {
+            return payment; // Return the payment back to the user
+        } else { */
+            //(invalidSlotCheck && emptySlotCheck)
+            // if both are true, Proceed with transaction
             HashMap<Double, Integer> changeToGive = super.getFunds().calculatePaymentTask(itemPrice, payment);
             return changeToGive; // Return the change to give back to the user
-        }
-    }
-
-    //TODO: Temporary method for testing
-    public double buyItemTask(int slotIndex, double payment) {
-        // check if invalid slot
-        boolean invalidSlotCheck = checkIfInvalidSlot(slotIndex);
-        // check if slot is empty
-        boolean emptySlotCheck = checkIfSlotIsFull(slotIndex);
-
-        if (invalidSlotCheck == false || emptySlotCheck == false) {
-            return payment; // Return payment if slot is invalid or empty
-        } else  if (invalidSlotCheck == true || emptySlotCheck == true) {
-            // Proceed with transaction
-            double itemPrice = getSlots().get(slotIndex - 1).getItemsInSlot().get(0).getPrice();
-            double changeToGive = super.getFunds().calculatePaymentTask(itemPrice, payment);
-            return changeToGive; // Return the change to give back to the user
-        }
-        else {
-            return payment;
-        }
+        // } 
     }
 
     /**
@@ -156,13 +77,21 @@ public class RegularVendingMachine extends VendingMachine {
      * @param slotIndex index of the slot
      * @return ArrayList of Items dispensed
      */
-    public ArrayList<Item> dispenseItemTask(int amount, int slotIndex) {
-        Slot selectedSlot = getSlots().get(slotIndex - 1); // slots are 0-8 but user inputs 1-9
+    public ArrayList<Item> dispenseItemTask(int amount, int fixedSlotIndex) {
+        // slot Index is already fixed in main
+        Slot selectedSlot = getSlots().get(fixedSlotIndex); // Adjust user input index to match 0-based array index
         ArrayList<Item> itemsDispensed = selectedSlot.dispenseItem(amount);
         // add transaction to history when item is dispensed
-        super.getTransactionHistory().addTransactionToHistory(itemsDispensed);
+        Transaction newTransaction = new Transaction(itemsDispensed);
+        super.getTransactionHistory().addTransactionToHistory(newTransaction);
+        
+        for (Item item : itemsDispensed) {
+            System.out.println("REGULAR VENDING MACHINE");
+            System.out.println(item); // Calls the toString method of the Item class
+        }
         return itemsDispensed;
     }
+    
 
     /**
      * Checks if the intended slotIndex is less than 0 or greater than the size of
@@ -172,11 +101,13 @@ public class RegularVendingMachine extends VendingMachine {
      * @param slotIndex
      * @return
      */
-    private boolean checkIfInvalidSlot(int slotIndex) {
+    /* private boolean checkIfInvalidSlot(int slotIndex) {
         if (slotIndex < 0 || slotIndex > getSlots().size()) {
             return false; // Invalid slot index
         }
         return true;
-    }
+    } */
+
+    //checkIfSlotIsFull removed
 
 }

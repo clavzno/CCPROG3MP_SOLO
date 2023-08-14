@@ -48,13 +48,8 @@ public class Item {
         return price;
     }
 
-    /**
-     * toString method for Item when printed in ArrayList
-     * @return String representation of Item
-     */
     @Override
     public String toString() {
-        //when printing ArrayList of items
-        return "Item[name=" + name + ", calories=" + calories + ", price=" + price + "]";
+        return "Item: " + name + " (" + calories + ") (" + price + ")";
     }
 }

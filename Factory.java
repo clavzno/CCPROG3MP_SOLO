@@ -111,20 +111,9 @@ public class Factory {
      */
     public HashMap<Double, Integer> buyItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
             int slotIndex, int amountToBuy, HashMap<Double, Integer> payment) {
-        // should return the change
-        // calls public HashMap<Double, Integer> buyItemTask(int slotIndex,
-        // HashMap<Double, Integer> payment)
-        HashMap<Double, Integer> change = vendingMachine.buyItemTask(slotIndex, payment);
-        return change;
-    }
-
-    //TODO: Temporary method for testing
-    public double buyItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
-            int slotIndex, int amountToBuy, double payment) {
-        // should return the change
-        // calls public HashMap<Double, Integer> buyItemTask(int slotIndex,
-        // HashMap<Double, Integer> payment)
-        double change = vendingMachine.buyItemTask(slotIndex, payment);
+        //get totalPrice
+        double totalPrice = vendingMachine.getSlots().get(slotIndex).getItemsInSlot().get(0).getPrice() * amountToBuy;
+        HashMap<Double, Integer> change = vendingMachine.buyItemTask(payment, totalPrice);
         return change;
     }
 
@@ -139,8 +128,12 @@ public class Factory {
      */
     public ArrayList<Item> dispenseItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
             int amountToBuy, int slotIndex) {
-        // calls public ArrayList<Item> dispenseItemTask(int amount, int slotIndex)
+        //slot index is fixed in main
         ArrayList<Item> itemsBought = vendingMachine.dispenseItemTask(amountToBuy, slotIndex);
+        for (Item item : itemsBought) {
+            System.out.println("FACTORY");
+            System.out.println(item); // Calls the toString method of the Item class
+        }
         return itemsBought;
     }
 
@@ -155,7 +148,7 @@ public class Factory {
             ArrayList<Integer> slotIndex, int amount) {
         Item item = new Item("", 0, 0);
         return item;
-        // TODO
+        //TODO
     }
 
     /********* MAINTENANCE ************/
