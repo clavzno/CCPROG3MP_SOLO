@@ -50,8 +50,10 @@ public class Slot {
         return itemsDispensed;
     } */
     public ArrayList<Item> dispenseItem(int amount) {
+        System.out.println("REACHED SLOT DISPENSE ITEM WITH AMOUNT " + amount);
         ArrayList<Item> itemsDispensed = new ArrayList<Item>();
         for (int i = 0; i < amount; i++) {
+            System.out.println("REACHED SLOT DISPENSE ITEM FOR LOOP");
             if (itemsInSlot.isEmpty()) {
                 //FOR TESTING
                 System.out.println("Slot is empty.");

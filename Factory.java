@@ -128,6 +128,7 @@ public class Factory {
      */
     public ArrayList<Item> dispenseItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
             int amountToBuy, int slotIndex) {
+                System.out.println("REACHED FACTORY DISPENSE ITEM TASK");
         //slot index is fixed in main
         ArrayList<Item> itemsBought = vendingMachine.dispenseItemTask(amountToBuy, slotIndex);
         for (Item item : itemsBought) {

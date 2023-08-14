@@ -9,7 +9,7 @@ import java.util.HashMap;
  * 2. Set New Price does not work properly for special vending machine //FIXED
  * 3. initalizeAdoboVendingMachine() adds 104 slots for some reason //FIXED
  * 4. RestockItemTask allows for slot exceeded amount for some reason 
- * 5. BuyItemTask for RegularVendingMachine does not work properly //change isn't returned even when changed to double
+ * 5. BuyItemTask for RegularVendingMachine does not work properly //FIXED
  */
 
 public class MainView {
@@ -49,6 +49,7 @@ public class MainView {
         HashMap<Double, Integer> testChange = factory.buyItemFromRegularVendingMachineTask(
                 (RegularVendingMachine) testRegularDrinksMachine, testSlotIndexToBuyFrom - 1, testAmountToBuy,
                 testPayment);
+        ArrayList<Item> testItemsBought = factory.dispenseItemFromRegularVendingMachineTask((RegularVendingMachine) testRegularDrinksMachine, testAmountToBuy, testSlotIndexToBuyFrom-1);
         //System.out.println("Your change is " + testChange);
 
         // View transaction history
@@ -178,7 +179,7 @@ public class MainView {
                                     System.out.println("Your change is " + change);
                                     // dispense item
                                     ArrayList<Item> items = factory.dispenseItemFromRegularVendingMachineTask(
-                                            (RegularVendingMachine) chosen, slotIndexToBuyFrom - 1, amountToBuy);
+                                            (RegularVendingMachine) chosen, amountToBuy, slotIndexToBuyFrom - 1);
                                     System.out.println("Dispensed the following items: ");
                                         for (Item item : items) {
                                             System.out.println("MAINVIEW");
