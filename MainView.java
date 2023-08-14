@@ -4,8 +4,7 @@ import java.util.HashMap;
 
 /*
  * PROBLEMS
- * 1. Calculation for change does not work properly, returns original payment and because original payment is returned, 
- * the user is unable to receive the items they ordered.
+ * 1. Calculation for change does not work properly, returns original payment and because original payment is returned, the user is unable to receive the items they ordered. // FIXED
  * 2. Set New Price does not work properly for special vending machine //FIXED
  * 3. initalizeAdoboVendingMachine() adds 104 slots for some reason //FIXED
  * 4. RestockItemTask allows for slot exceeded amount for some reason 
