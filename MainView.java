@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class MainView {
     public static void main(String[] args) {
-        VendingSimGUI GUI = new VendingSimGUI(); 
+        VendingSimGUI GUI = new VendingSimGUI();
 
         // GUI NOTE: show title screen
         Scanner sc = new Scanner(System.in);
@@ -41,7 +41,7 @@ public class MainView {
         testPayment.put(1.0, 1); // Pay 1.0 PHP
         testPayment.put(0.5, 1); // Pay 0.5 PHP
         testPayment.put(0.25, 2); // Pay 0.5 PHP
-        //System.out.println("You entered: " + testPayment);
+        // System.out.println("You entered: " + testPayment);
 
         // Buy items from the vending machine
         int testSlotIndexToBuyFrom = 1; // Change this to the correct slot index
@@ -49,12 +49,13 @@ public class MainView {
         HashMap<Double, Integer> testChange = factory.buyItemFromRegularVendingMachineTask(
                 (RegularVendingMachine) testRegularDrinksMachine, testSlotIndexToBuyFrom - 1, testAmountToBuy,
                 testPayment);
-        ArrayList<Item> testItemsBought = factory.dispenseItemFromRegularVendingMachineTask((RegularVendingMachine) testRegularDrinksMachine, testAmountToBuy, testSlotIndexToBuyFrom-1);
-        //System.out.println("Your change is " + testChange);
+        ArrayList<Item> testItemsBought = factory.dispenseItemFromRegularVendingMachineTask(
+                (RegularVendingMachine) testRegularDrinksMachine, testAmountToBuy, testSlotIndexToBuyFrom - 1);
+        // System.out.println("Your change is " + testChange);
 
         // View transaction history
-        //System.out.println("Transaction History: ");
-        //testRegularDrinksMachine.getTransactionHistory().viewTransactionHistory(testRegularDrinksMachine);
+        // System.out.println("Transaction History: ");
+        // testRegularDrinksMachine.getTransactionHistory().viewTransactionHistory(testRegularDrinksMachine);
         /* TESTING DONE */
 
         VendingMachine adoboVendingMachine = initializeAdoboVendingMachine();
@@ -107,7 +108,8 @@ public class MainView {
                         showAllVendingMachines(factory);
                         int chosenVendingMachineChoice = sc.nextInt();
                         sc.nextLine();
-                        if (chosenVendingMachineChoice < 1 || chosenVendingMachineChoice > factory.getVendingMachines().size()) {
+                        if (chosenVendingMachineChoice < 1
+                                || chosenVendingMachineChoice > factory.getVendingMachines().size()) {
                             System.out.println("Invalid Index.");
                             break;
                         }
@@ -157,7 +159,9 @@ public class MainView {
                             case 6: // Test Vending Machine Features
                                 if (chosen instanceof SpecialVendingMachine) {
                                     displayVendingMachineCatalogue(chosen);
-                                    System.out.println("SPECIAL VENDING MACHINE BUYING NOT YET IMPLEMENTED.");
+                                    // TODO check public static ArrayList<Item>
+                                    // chooseItemsForCartInSpecialVending(){
+
                                     break;
                                 } else {
                                     displayVendingMachineCatalogue(chosen);
@@ -172,19 +176,20 @@ public class MainView {
                                     HashMap<Double, Integer> payment = getPaymentFromUser(sc);
                                     System.out.println("You entered: " + payment);
                                     // buys item from vending machine by calling the buyItemTask
-                                    //imports the chosen vending machine, slotindex-1 because view is 1-x, amount to buy, and the Hashmap payment
+                                    // imports the chosen vending machine, slotindex-1 because view is 1-x, amount
+                                    // to buy, and the Hashmap payment
                                     HashMap<Double, Integer> change = factory.buyItemFromRegularVendingMachineTask(
                                             (RegularVendingMachine) chosen, slotIndexToBuyFrom - 1, amountToBuy,
-                                            payment); 
+                                            payment);
                                     System.out.println("Your change is " + change);
                                     // dispense item
                                     ArrayList<Item> items = factory.dispenseItemFromRegularVendingMachineTask(
                                             (RegularVendingMachine) chosen, amountToBuy, slotIndexToBuyFrom - 1);
                                     System.out.println("Dispensed the following items: ");
-                                        for (Item item : items) {
-                                            System.out.println("MAINVIEW");
-                                            System.out.println(item);
-                                        }
+                                    for (Item item : items) {
+                                        System.out.println("MAINVIEW");
+                                        System.out.println(item);
+                                    }
                                     break;
                                 }
                             case 7: // Exit Maintenance Menu
@@ -201,6 +206,62 @@ public class MainView {
         sc.close();
         System.out.println("Thank you for using " + name + " factory!");
     }
+
+    public static ArrayList<Item> chooseItemsForCartInSpecialVending(SpecialVendingMachine chosen, Scanner sc) {
+        ArrayList<Item> cart = new ArrayList<>();
+        
+        // Repeat the process as long as the cart is not empty
+        do {
+            boolean isDoneChoosingItems = false; // Flag to check if user is done choosing items
+            do {
+                displayVendingMachineCatalogue(chosen);
+                System.out.println("Choose slot index of item to add to your cart:");
+                int slotIndex = sc.nextInt();
+                sc.nextLine();
+                System.out.println("Enter amount to add to cart: ");
+                int amount = sc.nextInt();
+                sc.nextLine();
+        
+                // Add amount of items to cart
+                for (int i = 0; i < amount; i++) {
+                    Item itemToAdd = chosen.getSlots().get(slotIndex - 1).getItemsInSlot().get(0);
+                    chosen.addToCart(itemToAdd);
+                }
+    
+                // Prompt if done choosing
+                System.out.println("Are you done choosing items? (Y/N)");
+                String stringIsDoneChoosingItems = sc.nextLine();
+                if (stringIsDoneChoosingItems.equalsIgnoreCase("Y") || stringIsDoneChoosingItems.equalsIgnoreCase("Yes")) {
+                    isDoneChoosingItems = true;
+                }
+            } while (!isDoneChoosingItems);
+            
+            // Check if cart is not empty before checking if items are only from addon
+            if (!cart.isEmpty()) {
+                boolean areItemsOnlyFromAddon = isCartOnlyAddonItems(cart);
+                if (areItemsOnlyFromAddon) {
+                    System.out.println("You cannot proceed to checkout because your cart only contains addon items.");
+                    System.out.println("Clearing Cart...");
+                    chosen.getCart().clear();
+                }
+            }
+        } while (!cart.isEmpty());
+    
+        return cart;
+    }
+    
+
+    public static boolean isCartOnlyAddonItems(ArrayList<Item> cart) {
+        boolean isCartOnlyAddonItems = true;
+        for (Item item : cart) {
+            if (!(item instanceof AddonItem)) {
+                isCartOnlyAddonItems = false;
+                break; // no need to continue checking, we found a non-AddonItem
+            }
+        }
+        return isCartOnlyAddonItems;
+    }
+    
 
     public static double turnPaymentIntoDouble(HashMap<Double, Integer> payment) {
         double total = 0.0;
@@ -227,15 +288,15 @@ public class MainView {
         // Available)
         System.out.println("VENDING MACHINE CATALOGUE: ");
         for (int i = 0; i < machine.getSlots().size(); i++) {
-            Item item = machine.getSlots().get(i).getItemsInSlot().get(0);  // Get the current item
+            Item item = machine.getSlots().get(i).getItemsInSlot().get(0); // Get the current item
             String itemType = "";
-            
+
             if (item instanceof ComboItem) {
                 itemType = " (COMBO)";
             } else if (item instanceof AddonItem) {
                 itemType = " (ADDON ONLY)";
             }
-            
+
             System.out.println("[" + (i + 1) + "] Slot " + (i + 1) + ": Item Name: "
                     + item.getName() + " (" + item.getPrice() + " PHP) ("
                     + item.getCalories() + " calories) ("
@@ -245,9 +306,11 @@ public class MainView {
 
     public static void displayAmountItemsInSlots(VendingMachine machine) {
         for (int i = 0; i < machine.getSlots().size(); i++) {
-            System.out.println("Slot " + (i + 1) + " (" + machine.getSlots().get(i).getItemsInSlot().get(0).getName() + "): " + machine.getSlots().get(i).getItemsInSlot().size() + " items");
+            System.out.println("Slot " + (i + 1) + " (" + machine.getSlots().get(i).getItemsInSlot().get(0).getName()
+                    + "): " + machine.getSlots().get(i).getItemsInSlot().size() + " items");
         }
     }
+
     public static void displayItemsInSlots(VendingMachine machine) {
         for (int i = 0; i < machine.getSlots().size(); i++) {
             if (!machine.getSlots().get(i).getItemsInSlot().isEmpty()) {
@@ -431,9 +494,9 @@ public class MainView {
         VendingMachine adoboVendingMachine = new SpecialVendingMachine("Adobo Vending Machine");
         for (int i = 0; i < 13; i++) { // add 13 slots
             adoboVendingMachine.addSlot(1);
-        }    
+        }
         int itemsToAdd = adoboVendingMachine.getSlots().size(); // Number of items matches the number of slots
-    
+
         // public ComboItem(String name, double calories, double price, String
         // preparationMessage)
         for (int j = 0; j < itemsToAdd; j++) {
@@ -486,10 +549,9 @@ public class MainView {
                 currentSlot.makeAllSlotsFullOfItem();
             }
         }
-    
+
         return adoboVendingMachine;
     }
-    
 
     public static VendingMachine initializeRegularDrinksMachine() {
         VendingMachine regularDrinksMachine = new RegularVendingMachine("Regular Drinks Machine");
@@ -497,7 +559,8 @@ public class MainView {
             regularDrinksMachine.addSlot(1);
         }
 
-        //System.out.println("SLOTS ADDED TO REGULAR DRINKS MACHINE: " + regularDrinksMachine.getSlots().size());
+        // System.out.println("SLOTS ADDED TO REGULAR DRINKS MACHINE: " +
+        // regularDrinksMachine.getSlots().size());
 
         for (int j = 0; j < regularDrinksMachine.getSlots().size(); j++) {
             Slot currentSlot = regularDrinksMachine.getSlots().get(j);

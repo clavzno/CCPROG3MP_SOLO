@@ -78,7 +78,6 @@ public class RegularVendingMachine extends VendingMachine {
      * @return ArrayList of Items dispensed
      */
     public ArrayList<Item> dispenseItemTask(int amount, int fixedSlotIndex) {
-        System.out.println("REACHED REGVENT DISPENSE ITEM TASK");
         // slot Index is already fixed in main
         Slot selectedSlot = getSlots().get(fixedSlotIndex); // Adjust user input index to match 0-based array index
         ArrayList<Item> itemsDispensed = selectedSlot.dispenseItem(amount);
@@ -86,10 +85,6 @@ public class RegularVendingMachine extends VendingMachine {
         Transaction newTransaction = new Transaction(itemsDispensed);
         super.getTransactionHistory().addTransactionToHistory(newTransaction);
         
-        for (Item item : itemsDispensed) {
-            System.out.println("REGULAR VENDING MACHINE");
-            System.out.println(item); // Calls the toString method of the Item class
-        }
         return itemsDispensed;
     }
     

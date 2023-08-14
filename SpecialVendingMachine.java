@@ -38,8 +38,56 @@ public class SpecialVendingMachine extends VendingMachine {
      * @return
      */
     public HashMap<Double, Integer> buyItemTask(ArrayList<Item> cart, HashMap<Double, Integer> payment) {
-        //TODO
-        return payment;
+        double itemPrice = 0;
+        itemPrice = calculatePriceFromCartItems(cart); // calculate the price of the items in the cart
+        HashMap<Double, Integer> changeToGive = super.getFunds().calculatePaymentTask(itemPrice, payment);
+        return changeToGive; // Return the change to give back to the user
+    }
+
+    /**
+     * Calculates total price of items in cart and returns double form of total price
+     * @param cart cart to calculate price from
+     * @return total price of items in cart
+     */
+    private double calculatePriceFromCartItems(ArrayList<Item> cart) {
+        double price = 0;
+        for (Item item : cart) {
+            price += item.getPrice();
+        }
+        return price;
+    }
+
+    public Item dispenseItemTask(ArrayList<Item> cart) {
+        String combinedItemName = "";
+        double combinedItemCalories = 0.0;
+        double combinedItemPrice = 0.0;
+        
+        // go through items in cart and add the name to a new item
+        for (Item item : cart) {
+            // go through preparations and add them to the new item
+            if (item instanceof ComboItem) {
+                String prepComboMsg = ((ComboItem) item).getPreparationMessage();
+                System.out.println(prepComboMsg);
+            }
+            if (item instanceof AddonItem) {
+                String prepAddonMsg = ((AddonItem) item).getPreparationMessage();
+                System.out.println(prepAddonMsg);
+            }
+            
+            // add names of items to new item
+            String itemName = item.getName();
+            combinedItemName += " with " + itemName;
+    
+            double itemCalories = item.getCalories();
+            combinedItemCalories += itemCalories;
+    
+            double itemPrice = item.getPrice();
+            combinedItemPrice += itemPrice;
+        }
+        
+        // return the new item
+        Item combinedItem = new Item(combinedItemName, combinedItemCalories, combinedItemPrice);
+        return combinedItem;
     }
 
     // getters

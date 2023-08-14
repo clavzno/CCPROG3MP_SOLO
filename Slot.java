@@ -50,10 +50,8 @@ public class Slot {
         return itemsDispensed;
     } */
     public ArrayList<Item> dispenseItem(int amount) {
-        System.out.println("REACHED SLOT DISPENSE ITEM WITH AMOUNT " + amount);
         ArrayList<Item> itemsDispensed = new ArrayList<Item>();
         for (int i = 0; i < amount; i++) {
-            System.out.println("REACHED SLOT DISPENSE ITEM FOR LOOP");
             if (itemsInSlot.isEmpty()) {
                 //FOR TESTING
                 System.out.println("Slot is empty.");
@@ -63,13 +61,7 @@ public class Slot {
             Item item = itemsInSlot.get(0); //item is retrieved from arraylist
             itemsDispensed.add(item);
             this.itemsInSlot.remove(0); //item is removed from arraylist
-        }
-    
-        //TESTING
-        for (Item item : itemsDispensed) {
-            System.out.println("SLOT");
-            System.out.println(item); // Calls the toString method of the Item class
-        }        
+        } 
         return itemsDispensed;
     }
     

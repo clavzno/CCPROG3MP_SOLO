@@ -128,28 +128,22 @@ public class Factory {
      */
     public ArrayList<Item> dispenseItemFromRegularVendingMachineTask(RegularVendingMachine vendingMachine,
             int amountToBuy, int slotIndex) {
-                System.out.println("REACHED FACTORY DISPENSE ITEM TASK");
         //slot index is fixed in main
         ArrayList<Item> itemsBought = vendingMachine.dispenseItemTask(amountToBuy, slotIndex);
-        for (Item item : itemsBought) {
-            System.out.println("FACTORY");
-            System.out.println(item); // Calls the toString method of the Item class
-        }
         return itemsBought;
     }
 
     public HashMap<Double, Integer> buyItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine,
-            int slotIndex, int amount) {
-        HashMap<Double, Integer> change = new HashMap<Double, Integer>();
+            ArrayList<Item> cart, HashMap<Double, Integer> payment) {
+        //public HashMap<Double, Integer> buyItemTask(ArrayList<Item> cart, HashMap<Double, Integer> payment)
+        HashMap<Double, Integer> change = vendingMachine.buyItemTask(cart, payment);
         return change;
-        // TODO
     }
 
     public Item displenseItemFromSpecialVendingMachineTask(SpecialVendingMachine vendingMachine,
-            ArrayList<Integer> slotIndex, int amount) {
-        Item item = new Item("", 0, 0);
-        return item;
-        //TODO
+            ArrayList<Item> cart) {
+        Item combinedItem = vendingMachine.dispenseItemTask(cart);
+        return combinedItem;
     }
 
     /********* MAINTENANCE ************/
