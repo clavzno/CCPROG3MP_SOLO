@@ -1,5 +1,6 @@
 # CCPROG3MP_SOLO
 07/20/2023 Angelica Therese I. Clavano CCPROG3 N01
+01/19/2026 Removed folders that aren't needed anymore
 
 ## Vending Machine Sim Features
 1. Introduction and Start Menu
@@ -7,18 +8,26 @@
     1.2 Menu Options to create Vending Machines
     1.3 Menu Options to conduct maintenance
     1.4 Save and Exit game
+
+
 2. Create Regular Vending Machine
     2.1 Name Vending Machine "Cannot be changed later"\
     2.2 Add Slots "Minimum of 8"
+
+
 3. Create Special Vending Machine
     3.1 Name Vending Machine "Cannot be changed later"
     3.2 Add Slots "Minimum of 8"
     3.3 Add Items and set as combo or solo item
     3.4 "Special Vending Machine Created!" 
+
+
 4. Test Vending Features
     4.1 View all Vending Machines
     4.2 Test Regular Vending Machine
     4.3 Test Special Vending Machine
+
+
 5. Other Maintenance Features
     5.1 Restock Vending Machine
         5.1.1 View and select Vending Machine
@@ -45,6 +54,8 @@
         5.5.2 Export to txt file.
         5.5.3 View txt file in GUI "Summary of Transactions", trigger: "OK"
         5.5.4 "Summary of Transactions saved in files!"
+
+
 6. Exit Game
     6.1 Save and Exit Game
     6.2 Exit Game and discard state
